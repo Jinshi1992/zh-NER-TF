@@ -7,24 +7,22 @@ def read_corpus(corpus_path):
     :param corpus_path:
     :return: data
     """
-    data = [];words = [];labels = []
-    with open(corpus_path, encoding='utf-8') as fr:
-        lines = fr.readlines()
-
-    for line in lines:
+    rf = open(input_file,'r')
+    lines = [];words = [];labels = []
+    for line in rf:
         word = line.strip().split(' ')[0]
         label = line.strip().split(' ')[-1]
         # here we dont do "DOCSTART" check
         if len(line.strip())==0 and words[-1] == '.':
             l = ' '.join([label for label in labels if len(label) > 0])
             w = ' '.join([word for word in words if len(word) > 0])
-            data.append((l,w))
+            lines.append((l,w))
             words=[]
             labels = []
         words.append(word)
         labels.append(label)
-    fr.close()
-    return data
+    rf.close()
+    return lines
 
 def main():
    
