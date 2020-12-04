@@ -1,14 +1,14 @@
 import sys, pickle, os, random
 import numpy as np
 
-def read_corpus(self, corpus_path):
+def read_corpus(corpus_path):
     """
     read corpus and return the list of samples
     :param corpus_path:
     :return: data
     """
     with open(corpus_path) as f:
-        words, tags = [], []
+        words, labels = [], []
         lines = []
         for line in f:
             line = line.strip()
@@ -17,18 +17,17 @@ def read_corpus(self, corpus_path):
                     niter += 1
                     if self.max_iter is not None and niter > self.max_iter:
                         break
-                    yield words, tags
-                    words, tags = [], []
+                    yield words, labels
+                    words, labels = [], []
             else:
                 ls = line.split(' ')
-                word, tag = ls[0],ls[1]
-                if self.processing_word is not None:
-                    word = self.processing_word(word)
-                if self.processing_tag is not None:
-                    tag = self.processing_tag(tag)
-                words += [word]
-                tags += [tag]
-                lines.append((tags,words))
+                word, label = ls[0],ls[-1]
+                if len(line.strip())==0 and words[-1] == '.':
+                   word = ' '.join([label for label in labels if len(label) > 0])
+                   label = ' '.join([word for word in words if len(word) > 0]) 
+                   words += [word]
+                   labels += [label]
+                   lines.append((labels,words))
     return lines                 
 def main():
    
