@@ -5,7 +5,8 @@ import numpy as np
 tag2label = {"O": 0,
              "B-PER": 1, "I-PER": 2,
              "B-LOC": 3, "I-LOC": 4,
-             "B-ORG": 5, "I-ORG": 6
+             "B-ORG": 5, "I-ORG": 6,
+             "B-MISC":7, "I-MISC":8
              }
 
 
@@ -15,19 +16,23 @@ def read_corpus(corpus_path):
     :param corpus_path:
     :return: data
     """
-    data = []
+    data = [];words = [];labels = []
     with open(corpus_path, encoding='utf-8') as fr:
         lines = fr.readlines()
-    sent_, tag_ = [], []
-    for line in lines:
-        if line != '\n':
-            [char, label] = line.strip().split()
-            sent_.append(char)
-            tag_.append(label)
-        else:
-            data.append((sent_, tag_))
-            sent_, tag_ = [], []
 
+    for line in lines:
+        word = line.strip().split(' ')[0]
+        label = line.strip().split(' ')[-1]
+        # here we dont do "DOCSTART" check
+        if len(line.strip())==0 and words[-1] == '.':
+            l = ' '.join([label for label in labels if len(label) > 0])
+            w = ' '.join([word for word in words if len(word) > 0])
+            data.append((l,w))
+            words=[]
+            labels = []
+        words.append(word)
+        labels.append(label)
+    rf.close()
     return data
 
 
