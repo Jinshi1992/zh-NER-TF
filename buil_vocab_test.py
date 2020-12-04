@@ -28,7 +28,7 @@ def read_corpus(corpus_path):
 
 def main():
    
-    vocab_path = "data_path/"
+    vocab_path = "data_path/word2id_test"
     corpus_path = "data_path/train_data"
     min_count = 10
     
