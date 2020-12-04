@@ -36,7 +36,7 @@ def main():
     word2id = {}
     for l, w in data:
         for word in w:
-        print(w)
+            print(word)
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
