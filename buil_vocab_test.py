@@ -12,23 +12,16 @@ def read_corpus(corpus_path):
         lines = []
         for line in f:
             line = line.strip()
-            if (len(line) == 0 or line.startswith("-DOCSTART-")):
-                if len(words) != 0:
-                    niter += 1
-                    if self.max_iter is not None and niter > self.max_iter:
-                        break
-                    yield words, labels
-                    words, labels = [], []
-            else:
-                ls = line.split(' ')
-                word, label = ls[0],ls[-1]
-                if len(line.strip())==0 and words[-1] == '.':
-                   word = ' '.join([label for label in labels if len(label) > 0])
-                   label = ' '.join([word for word in words if len(word) > 0]) 
-                   words += [word]
-                   labels += [label]
-                   lines.append((labels,words))
-    return lines                 
+            ls = line.split(' ')
+            word, label = ls[0],ls[-1]
+            if len(line.strip())==0 and words[-1] == '.':
+               word = ' '.join([label for label in labels if len(label) > 0])
+               label = ' '.join([word for word in words if len(word) > 0]) 
+               words += [word]
+               labels += [label]
+               lines.append((label,word))
+        return lines
+    
 def main():
    
     vocab_path = "data_path/word2id_test.pkl"
