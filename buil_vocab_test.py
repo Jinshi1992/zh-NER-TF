@@ -1,7 +1,7 @@
 import sys, pickle, os, random
 import numpy as np
 
-def read_corpus(corpus_path):
+def read_corpus(self, corpus_path):
     """
     read corpus and return the list of samples
     :param corpus_path:
