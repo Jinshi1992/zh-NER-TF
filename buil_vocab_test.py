@@ -3,14 +3,14 @@ import numpy as np
 
 self.max_iter = None
 
-def read_corpus(self, corpus_path):
+def read_corpus(corpus_path):
     """
     read corpus and return the list of samples
     :param corpus_path:
     :return: data
     """
     niter = 0
-    with open(self.filename) as f:
+    with open(corpus_path) as f:
         words, tags = [], []
         lines = []
         for line in f:
@@ -18,15 +18,13 @@ def read_corpus(self, corpus_path):
             if (len(line) == 0 or line.startswith("-DOCSTART-")):
                 if len(words) != 0:
                     niter += 1
-                    if self.max_iter is not None and niter > self.max_iter:
-                        break
                     yield words, tags
                     words, tags = [], []
             else:
                 ls = line.split(' ')
                 word, tag = ls[0],ls[1]
-                word = self.processing_word(word)
-                tag = self.processing_tag(tag)
+                word = ' '.join([word for word in words if len(word) > 0])
+                tag = ' '.join([label for label in labels if len(label) > 0])
                 lines.append((tag,word))
                 words += [word]
                 tags += [tag]
