@@ -32,9 +32,9 @@ def main():
     vocab.add(UNK)
     vocab.add(NUM)
     
-    filename_words = "data/words.txt"
-    filename_tags = "data/tags.txt"
-    filename_chars = "data/chars.txt"
+    filename_words = "data_path/words.txt"
+    filename_tags = "data_path/tags.txt"
+    filename_chars = "data_path/chars.txt"
     
     # Save vocab
     write_vocab(vocab, filename_words)
