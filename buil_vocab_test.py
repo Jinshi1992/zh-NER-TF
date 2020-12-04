@@ -34,8 +34,8 @@ def main():
     
     data = read_corpus(corpus_path)
     word2id = {}
-    for word, label in data:
-        for word in words:
+    for l, w in data:
+        for word in l:
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
@@ -53,7 +53,7 @@ def main():
     print(len(word2id))
     with open(vocab_path, 'wb') as fw:
         pickle.dump(word2id, fw)
-   
+
    
    
 if __name__ == "__main__":
