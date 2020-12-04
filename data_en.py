@@ -32,7 +32,7 @@ def read_corpus(corpus_path):
             labels = []
         words.append(word)
         labels.append(label)
-    rf.close()
+    fr.close()
     return data
 
 
