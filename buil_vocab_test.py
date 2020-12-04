@@ -7,22 +7,20 @@ def read_corpus(corpus_path):
     :param corpus_path:
     :return: data
     """
-    rf = open(corpus_path,'r')
-    lines = [];words = [];labels = []
-    for line in rf:
-        word = line.strip().split(' ')[0]
-        label = line.strip().split(' ')[-1]
-        # here we dont do "DOCSTART" check
-        if len(line.strip())==0 and words[-1] == '.':
-            l = ' '.join([label for label in labels if len(label) > 0])
-            w = ' '.join([word for word in words if len(word) > 0])
-            lines.append((l,w))
-            words=[]
-            labels = []
-        words.append(word)
-        labels.append(label)
-    rf.close()
-    return lines, words
+    data = []
+    with open(corpus_path, encoding='utf-8') as fr:
+        lines = fr.readlines()
+    sent_, tag_ = [], []
+    for line in lines:
+        if line != '\n':
+            [char, label] = line.strip().split()
+            sent_.append(char)
+            tag_.append(label)
+        else:
+            data.append((sent_, tag_))
+            sent_, tag_ = [], []
+
+    return data
     
 def main():
    
@@ -30,18 +28,16 @@ def main():
     corpus_path = "data_path/train_data"
     min_count = 10
     
-    data, words= read_corpus(corpus_path)
-    #print(data)
-    word2id = {}
-    for word in words:
-        print(word)
-        if word.isdigit():
-            word = '<NUM>'
-        if word not in word2id:
-            word2id[word] = [len(word2id)+1, 1]
-        else:
-            word2id[word][1] += 1
-    
+    for sent_, tag_ in data:
+        for word in sent_:
+            print(word)
+            if word.isdigit():
+                word = '<NUM>'
+            if word not in word2id:
+                word2id[word] = [len(word2id)+1, 1]
+            else:
+                word2id[word][1] += 1
+     
     new_id = 1
     for word in word2id.keys():
         word2id[word] = new_id
