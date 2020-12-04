@@ -35,7 +35,7 @@ def main():
     data = read_corpus(corpus_path)
     word2id = {}
     for l, w in data:
-        for word in l:
+        for word in w:
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
