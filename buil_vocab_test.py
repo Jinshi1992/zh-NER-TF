@@ -28,6 +28,9 @@ def main():
     corpus_path = "data_path/train_data"
     min_count = 10
     
+    data = read_corpus(corpus_path)
+    word2id = {}
+    
     for sent_, tag_ in data:
         for word in sent_:
             print(word)
