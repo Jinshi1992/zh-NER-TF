@@ -46,8 +46,8 @@ def vocab_build(vocab_path, corpus_path, min_count):
     """
     data = read_corpus(corpus_path)
     word2id = {}
-    for word, label in data:
-        for word in words:
+    for l, w in data:
+        for word in l:
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
