@@ -7,23 +7,29 @@ def read_corpus(corpus_path):
     :param corpus_path:
     :return: data
     """
-    rf = open(corpus_path,'r')
-    lines = [];words = [];labels = []
-    for line in rf:
-        word = line.strip().split(' ')[0]
-        label = line.strip().split(' ')[-1]
-        # here we dont do "DOCSTART" check
-        if len(line.strip())==0 and words[-1] == '.':
-            l = ' '.join([label for label in labels if len(label) > 0])
-            w = ' '.join([word for word in words if len(word) > 0])
-            lines.append((l,w))
-            words=[]
-            labels = []
-        words.append(word)
-        labels.append(label)
-    rf.close()
-    return lines
-
+    with open(corpus_path) as f:
+        words, tags = [], []
+        lines = []
+        for line in f:
+            line = line.strip()
+            if (len(line) == 0 or line.startswith("-DOCSTART-")):
+                if len(words) != 0:
+                    niter += 1
+                    if self.max_iter is not None and niter > self.max_iter:
+                        break
+                    yield words, tags
+                    words, tags = [], []
+            else:
+                ls = line.split(' ')
+                word, tag = ls[0],ls[1]
+                if self.processing_word is not None:
+                    word = self.processing_word(word)
+                if self.processing_tag is not None:
+                    tag = self.processing_tag(tag)
+                words += [word]
+                tags += [tag]
+                lines.append((tags,words))
+    return lines                 
 def main():
    
     vocab_path = "data_path/word2id_test.pkl"
