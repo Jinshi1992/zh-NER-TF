@@ -11,9 +11,8 @@ def read_corpus(corpus_path):
         words, labels = [], []
         lines = []
         for line in f:
-            line = line.strip()
-            ls = line.split(' ')
-            word, label = ls[0],ls[-1]
+            word = line.strip().split(' ')[0]
+            label = line.strip().split(' ')[-1]
             if len(line.strip())==0 and words[-1] == '.':
                word = ' '.join([label for label in labels if len(label) > 0])
                label = ' '.join([word for word in words if len(word) > 0]) 
