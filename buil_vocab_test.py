@@ -13,7 +13,8 @@ def read_corpus(corpus_path):
     sent_, tag_ = [], []
     for line in lines:
         if line != '\n':
-            [char, label] = line.strip().split()
+            char = line.strip().split(' ')[0]
+            label = line.strip().split(' ')[-1]
             sent_.append(char)
             tag_.append(label)
         else:
