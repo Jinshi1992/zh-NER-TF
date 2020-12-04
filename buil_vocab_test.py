@@ -22,7 +22,7 @@ def read_corpus(corpus_path):
         words.append(word)
         labels.append(label)
     rf.close()
-    return lines
+    return lines, words
     
 def main():
    
@@ -30,18 +30,17 @@ def main():
     corpus_path = "data_path/train_data"
     min_count = 10
     
-    data = read_corpus(corpus_path)
-    print(data)
+    data, words= read_corpus(corpus_path)
+    #print(data)
     word2id = {}
-    for l, w in data:
-        for word in w:
-            #print(word)
-            if word.isdigit():
-                word = '<NUM>'
-            if word not in word2id:
-                word2id[word] = [len(word2id)+1, 1]
-            else:
-                word2id[word][1] += 1
+    for word in words:
+        print(word)
+        if word.isdigit():
+            word = '<NUM>'
+        if word not in word2id:
+            word2id[word] = [len(word2id)+1, 1]
+        else:
+            word2id[word][1] += 1
     
     new_id = 1
     for word in word2id.keys():
