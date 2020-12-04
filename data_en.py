@@ -16,23 +16,20 @@ def read_corpus(corpus_path):
     :param corpus_path:
     :return: data
     """
-    data = [];words = [];labels = []
+    data = []
     with open(corpus_path, encoding='utf-8') as fr:
         lines = fr.readlines()
-
+    sent_, tag_ = [], []
     for line in lines:
-        word = line.strip().split(' ')[0]
-        label = line.strip().split(' ')[-1]
-        # here we dont do "DOCSTART" check
-        if len(line.strip())==0 and words[-1] == '.':
-            l = ' '.join([label for label in labels if len(label) > 0])
-            w = ' '.join([word for word in words if len(word) > 0])
-            data.append((l,w))
-            words=[]
-            labels = []
-        words.append(word)
-        labels.append(label)
-    fr.close()
+        if line != '\n':
+            char = line.strip().split(' ')[0]
+            label = line.strip().split(' ')[-1]
+            sent_.append(char)
+            tag_.append(label)
+        else:
+            data.append((sent_, tag_))
+            sent_, tag_ = [], []
+
     return data
 
 
@@ -46,8 +43,9 @@ def vocab_build(vocab_path, corpus_path, min_count):
     """
     data = read_corpus(corpus_path)
     word2id = {}
-    for l, w in data:
-        for word in w:
+    
+    for sent_, tag_ in data:
+        for word in sent_:
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
