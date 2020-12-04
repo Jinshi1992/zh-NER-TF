@@ -43,7 +43,7 @@ def main():
     # Trim GloVe Vectors
     vocab = load_vocab(filename_words)
     #export_trimmed_glove_vectors(vocab, config.filename_glove,
-                                config.filename_trimmed, config.dim_word)
+                                #config.filename_trimmed, config.dim_word)
 
     # Build and save char vocab
     train = CoNLLDataset("data_path/train_data")
