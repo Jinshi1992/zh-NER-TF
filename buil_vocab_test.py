@@ -7,7 +7,7 @@ def read_corpus(corpus_path):
     :param corpus_path:
     :return: data
     """
-    rf = open(input_file,'r')
+    rf = open(corpus_path,'r')
     lines = [];words = [];labels = []
     for line in rf:
         word = line.strip().split(' ')[0]
