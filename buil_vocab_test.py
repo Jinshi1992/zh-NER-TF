@@ -1,24 +1,35 @@
 import sys, pickle, os, random
 import numpy as np
 
-def read_corpus(corpus_path):
+self.max_iter = None
+
+def read_corpus(self, corpus_path):
     """
     read corpus and return the list of samples
     :param corpus_path:
     :return: data
     """
-    with open(corpus_path) as f:
-        words, labels = [], []
+    niter = 0
+    with open(self.filename) as f:
+        words, tags = [], []
         lines = []
         for line in f:
-            word = line.strip().split(' ')[0]
-            label = line.strip().split(' ')[-1]
-            if len(line.strip())==0 and words[-1] == '.':
-               word = ' '.join([label for label in labels if len(label) > 0])
-               label = ' '.join([word for word in words if len(word) > 0]) 
-               words += [word]
-               labels += [label]
-               lines.append((label,word))
+            line = line.strip()
+            if (len(line) == 0 or line.startswith("-DOCSTART-")):
+                if len(words) != 0:
+                    niter += 1
+                    if self.max_iter is not None and niter > self.max_iter:
+                        break
+                    yield words, tags
+                    words, tags = [], []
+            else:
+                ls = line.split(' ')
+                word, tag = ls[0],ls[1]
+                word = self.processing_word(word)
+                tag = self.processing_tag(tag)
+                lines.append((tag,word))
+                words += [word]
+                tags += [tag]
         return lines
     
 def main():
