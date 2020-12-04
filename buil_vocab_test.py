@@ -31,10 +31,11 @@ def main():
     min_count = 10
     
     data = read_corpus(corpus_path)
+    print(data)
     word2id = {}
     for l, w in data:
         for word in w:
-            print(word)
+            #print(word)
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
