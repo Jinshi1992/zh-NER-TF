@@ -1,8 +1,6 @@
 import sys, pickle, os, random
 import numpy as np
 
-self.max_iter = None
-
 def read_corpus(corpus_path):
     """
     read corpus and return the list of samples
