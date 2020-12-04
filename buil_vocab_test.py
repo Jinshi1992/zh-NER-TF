@@ -22,7 +22,7 @@ def read_corpus(corpus_path):
                 ls = line.split(' ')
                 word, tag = ls[0],ls[1]
                 word = ' '.join([word for word in words if len(word) > 0])
-                tag = ' '.join([label for label in labels if len(label) > 0])
+                tag = ' '.join([tag for tag in tags if len(tag) > 0])
                 lines.append((tag,word))
                 words += [word]
                 tags += [tag]
