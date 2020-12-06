@@ -6,7 +6,7 @@ tag2label = {"O": 0,
              "B-MISC": 1, "I-MISC": 2,
              "B-LOC": 3, "I-LOC": 4,
              "B-ORG": 5, "I-ORG": 6,
-             "B-PER":7, "I-PER":8
+             "I-PER": 7
              }
 
 
