@@ -25,7 +25,7 @@ def read_corpus(corpus_path):
     
 def main():
    
-    vocab_path = "data_path/word2id_de.pkl"
+    vocab_path = "data_path/word2id_de_test.pkl"
     corpus_path = "data_path/train_data"
     min_count = 10
     
@@ -33,7 +33,7 @@ def main():
     word2id = {}
     
     for sent_, tag_ in data:
-        for word in sent_:
+        for word in tag_:
             print(word)
             if word.isdigit():
                 word = '<NUM>'
