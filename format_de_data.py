@@ -25,8 +25,8 @@ def main():
     print(data)        
     
     with open("train_data_format.txt","w") as f:
-        for char, label enumerate(data):
-            f.write(char, label)
+        for i enumerate(data):
+            f.write(i)
     
 if __name__ == "__main__":
     main()
