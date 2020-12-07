@@ -19,7 +19,8 @@ def main():
         if line != '\n':
             char = line.strip().split(' ')[0]
             label = line.strip().split(' ')[-1]
-            data.append((char, label))    
+            data.append((char, label))
+    print(data)
 
     with open('train_data_format.txt', 'w') as fp:
         for char, label in data:
