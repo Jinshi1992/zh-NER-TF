@@ -27,7 +27,7 @@ def main():
     print(data)        
     
     with open("train_data_format.txt","w") as f:
-        for i, sent_, tag_ in enumerate(data):
+        for sent_, tag_ in enumerate(data):
             for i, word in enumerate(sent_):
                 f.write(word)
             for i, tag in enumerate(tag_):
