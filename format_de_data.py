@@ -23,7 +23,7 @@ def main():
         else:
             data.append((sent_, tag_))
             sent_, tag_ = [], []
-            
+    print(data)        
     with open("train_data_format.txt","w") as f:
         for sent_, tag_ in data:
             f.write(sent_, tag_)
