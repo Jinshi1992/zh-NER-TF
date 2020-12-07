@@ -25,5 +25,7 @@ def main():
     with open("train_data_format.txt","w") as f:
         f.write('\n'.join('{} {}'.format(x[0],x[1]) for x in data)
                 
+     
+                
 if __name__ == "__main__":
     main()
