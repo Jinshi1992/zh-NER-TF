@@ -19,13 +19,14 @@ def main():
         if line != '\n':
             char = line.strip().split(' ')[0]
             label = line.strip().split(' ')[-1]
-            data.append((char, label))
+            data.append(char, label)
         else:
             data.append('\n')    
     
 
     with open('train_data_format.txt', 'w') as fp:
-        fp.write('\n'.join('%s %s' % x for x in data))
+        for char, label in data:
+            fp.write('\n'.join(["%s %s" % (char, label)]) + "\n")
     
     
 if __name__ == "__main__":
