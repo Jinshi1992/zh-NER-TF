@@ -22,8 +22,7 @@ def main():
             data.append((char, label))
 
     with open('train_data_format.txt', 'w') as fp:
-        for char, label in data:
-            fp.write('\n'.join(["%s %s" % (char, label)]))
+        fp.write('\n'.join('{} {}'.format(x[0],x[1]) for x in mylist))
     
     
 if __name__ == "__main__":
