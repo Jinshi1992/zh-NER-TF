@@ -9,7 +9,7 @@ def main():
     :return: data
     """
     
-    corpus_path = "data_path/train_data"
+    corpus_path = "data_path/test_data"
     
     data = []
     with open(corpus_path, encoding='utf-8') as fr:
