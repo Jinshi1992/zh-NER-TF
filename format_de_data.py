@@ -24,10 +24,9 @@ def main():
             data.append('\n')    
     
 
-    with open("train_data_format.csv", "w") as the_file:
-        csv.register_dialect("custom", delimiter=" ", skipinitialspace=True)
-        writer = csv.writer(the_file, dialect="custom")
-        for tup in data:
-            writer.writerow(tup)
+    with open('train_data_format.txt', 'w') as fp:
+        fp.write('\n'.join('%s %s' % x for x in data))
+    
+    
 if __name__ == "__main__":
     main()
