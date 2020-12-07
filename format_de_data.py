@@ -2,7 +2,7 @@ import sys, pickle, os, random
 import numpy as np
 
 def main():
-
+    """
     read corpus and return the list of samples
     :param corpus_path:
     :return: data
