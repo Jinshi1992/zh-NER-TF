@@ -138,7 +138,7 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
         random.shuffle(data)
 
     seqs, labels = [], []
-    for (sent_, i, j, k, tag_) in data:
+    for (sent_, tag_) in data:
         sent_ = sentence2id(sent_, vocab)
         label_ = [tag2label[tag] for tag in tag_]
 
