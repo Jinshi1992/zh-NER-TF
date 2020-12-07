@@ -1,5 +1,6 @@
 import sys, pickle, os, random
 import numpy as np
+import csv
 
 def main():
     """
@@ -22,10 +23,11 @@ def main():
         else:
             data.append('\n')    
     
-    with open("train_data_format.txt","w") as f:
-        for (char, label) in data:
-            f.write("\n".join(["%s %s" % (char, label)]) + "\n")
-                
-                
+
+    with open(<train_data_format>, "w") as the_file:
+        csv.register_dialect("custom", delimiter=" ", skipinitialspace=True)
+        writer = csv.writer(the_file, dialect="custom")
+        for tup in data:
+            writer.write(tup)
 if __name__ == "__main__":
     main()
