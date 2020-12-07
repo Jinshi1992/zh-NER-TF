@@ -23,7 +23,7 @@ def main():
             data.append('\n')    
     
     with open("train_data_format.txt","w") as f:
-        for char, label in data:
+        for (char, label) in data:
             f.write("\n".join(["%s %s" % (char, label)]) + "\n")
             
     
