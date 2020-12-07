@@ -198,11 +198,9 @@ class BiLSTM_CRF(object):
         """
         num_batches = (len(train) + self.batch_size - 1) // self.batch_size
         
-        print(len(train))
-        print(num_batches)
-        
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         batches = batch_yield(train, self.batch_size, self.vocab, self.tag2label, shuffle=self.shuffle)
+        print(batches)
         for step, (seqs, labels) in enumerate(batches):
 
             sys.stdout.write(' processing: {} batch / {} batches.'.format(step + 1, num_batches) + '\r')
