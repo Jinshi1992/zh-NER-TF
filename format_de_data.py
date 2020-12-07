@@ -23,6 +23,7 @@ def main():
 
     with open('train_data_format.txt', 'w') as fp:
         fp.write('\n'.join('{} {}'.format(x[0],x[1]) for x in data))
+        fp.write("test123")
         fp.close()
     
     
