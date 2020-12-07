@@ -24,7 +24,7 @@ def main():
     
     with open("train_data_format.txt","w") as f:
         for char, label in data:
-            f.write("\n".join([%s %s % (char, label)]) + "\n")
+            f.write("\n".join(["%s %s" % (char, label)]) + "\n")
             
     
 if __name__ == "__main__":
