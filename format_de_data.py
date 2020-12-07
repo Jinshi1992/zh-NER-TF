@@ -20,10 +20,13 @@ def main():
             label = line.strip().split(' ')[-1]
             sent_.append(char)
             tag_.append(label)
+            print(sent_)
+            print(tag_)
         else:
             data.append((sent_, tag_))
             sent_, tag_ = [], []
-    print(data)        
+    #print(data)        
+    
     with open("train_data_format.txt","w") as f:
         for sent_, tag_ in data:
             f.write(sent_, tag_)
