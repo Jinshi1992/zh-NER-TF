@@ -20,7 +20,7 @@ def main():
             label = line.strip().split(' ')[-1]
             data.append((char, label))
         else:
-            data.append(\n)
+            data.append('\n')
             
     print(data)        
     
