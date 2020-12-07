@@ -15,7 +15,7 @@ def main():
         lines = fr.readlines()
     sent_, tag_ = [], []
     for line in lines:
-        if line != \n:
+        if line != '\n':
             char = line.strip().split(' ')[0]
             label = line.strip().split(' ')[-1]
             data.append((char, label))
