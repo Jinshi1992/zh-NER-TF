@@ -28,6 +28,6 @@ def main():
         csv.register_dialect("custom", delimiter=" ", skipinitialspace=True)
         writer = csv.writer(the_file, dialect="custom")
         for tup in data:
-            writer.write(tup)
+            writer.writerow(tup)
 if __name__ == "__main__":
     main()
