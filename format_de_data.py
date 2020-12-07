@@ -20,9 +20,7 @@ def main():
             label = line.strip().split(' ')[-1]
             data.append((char, label))
         else:
-            data.append('\n')
-            
-    print(data)        
+            data.append('\n')    
     
     with open("train_data_format.txt","w") as f:
         for i in enumerate(data):
