@@ -26,8 +26,7 @@ def main():
     #print(data)        
     
     with open("train_data_format.txt","w") as f:
-        for sent_, tag_ in data:
-            f.write(sent_, tag_)
+        f.write(data)
     
 if __name__ == "__main__":
     main()
