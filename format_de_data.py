@@ -21,7 +21,7 @@ def main():
             label = line.strip().split(' ')[-1]
             data.append((char, label))
 
-    with open('train_data_format.txt', 'w') as fp:
+    with open('/data_path/train_data_format.txt', 'w') as fp:
         #fp.write('\n'.join('{} {}'.format(x[0],x[1]) for x in data))
         fp.write("test123")
         fp.close()
