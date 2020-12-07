@@ -15,23 +15,18 @@ def main():
         lines = fr.readlines()
     sent_, tag_ = [], []
     for line in lines:
-        if line != '\n':
+        if line != \n:
             char = line.strip().split(' ')[0]
             label = line.strip().split(' ')[-1]
-            sent_.append(char)
-            tag_.append(label)
+            data.append((char, label))
         else:
-            data.append((sent_, tag_))
-            sent_, tag_ = [], []
-    
+            data.append(\n)
+            
     print(data)        
     
     with open("train_data_format.txt","w") as f:
-        for sent_, tag_ in enumerate(data):
-            for i, word in enumerate(sent_):
-                f.write(word)
-            for i, tag in enumerate(tag_):
-                f.write(tag)
+        for char, label enumerate(data):
+            f.write(char, label)
     
 if __name__ == "__main__":
     main()
