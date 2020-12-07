@@ -26,10 +26,10 @@ def main():
     #print(data)        
     
     with open("train_data_format.txt","w") as f:
-        for sent_, tag_ in enumerate(data):
-            for word in sent_:
+        for sent_, tag_ in data:
+            for i, word in enumerate(sent_):
                 f.write(word)
-            for tag in tag_:
+            for i, tag in enumerate(tag_):
                 f.write(tag)
     
 if __name__ == "__main__":
