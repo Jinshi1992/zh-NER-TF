@@ -24,7 +24,7 @@ def main():
     
     with open("train_data_format.txt","w") as f:
         for i in enumerate(data):
-            f.write(i)
+            f.write('\n'.join('%s %s' % x for x in mylist))
     
 if __name__ == "__main__":
     main()
