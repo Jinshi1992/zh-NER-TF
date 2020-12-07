@@ -20,7 +20,7 @@ def main():
             char = line.strip().split(' ')[0]
             label = line.strip().split(' ')[-1]
             data.append((char, label))
-        else
+        else:
             data.append('\n')
 
     with open('data_path/train_data_format.txt', 'w') as fp:
