@@ -20,11 +20,10 @@ def main():
             char = line.strip().split(' ')[0]
             label = line.strip().split(' ')[-1]
             data.append((char, label))
-    print(data)
 
     with open('train_data_format.txt', 'w') as fp:
         for char, label in data:
-            fp.write('\n'.join(["%s %s" % (char, label)]) + "\n")
+            fp.write('\n'.join(["%s %s" % (char, label)]))
     
     
 if __name__ == "__main__":
