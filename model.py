@@ -304,6 +304,9 @@ class BiLSTM_CRF(object):
                 print(tag)
             for i in range(len(sent)):
                 sent_res.append([sent[i], tag[i], tag_[i]])
+                print(sent)
+                print(len(label_))
+                print(tag)
             model_predict.append(sent_res)
         epoch_num = str(epoch+1) if epoch != None else 'test'
         label_path = os.path.join(self.result_path, 'label_' + epoch_num)
