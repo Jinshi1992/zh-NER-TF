@@ -13,7 +13,6 @@ def main():
     data = []
     with open(corpus_path, encoding='utf-8') as fr:
         lines = fr.readlines()
-    print(lines)
     sent_, tag_ = [], []
     for line in lines:
         if line != '\n':
@@ -21,8 +20,6 @@ def main():
             label = line.strip().split(' ')[-1]
             sent_.append(char)
             tag_.append(label)
-            print(sent_)
-            print(tag_)
         else:
             data.append((sent_, tag_))
             sent_, tag_ = [], []
@@ -32,3 +29,5 @@ def main():
         for sent_, tag_ in data:
             f.write(sent_, tag_)
     
+if __name__ == "__main__":
+    main()
