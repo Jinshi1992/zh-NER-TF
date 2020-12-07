@@ -23,8 +23,8 @@ def main():
             data.append('\n')    
     
     with open("train_data_format.txt","w") as f:
-        for i in enumerate(data):
-            f.write('\n'.join('%s %s' % x for x in mylist))
+        f.write('\n'.join('%s %s' % x for x in data))
+            
     
 if __name__ == "__main__":
     main()
