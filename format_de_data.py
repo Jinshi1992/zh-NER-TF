@@ -26,7 +26,7 @@ def main():
     with open('data_path/train_data_format.txt', 'w') as fp:
         for i in data:
             if i != '\n':
-                fp.write('\n'.join('{} {}'.format(i[0], i[1])))
+                fp.write('{} {}'.format(i[0], i[1]))
             else:
                 fp.write('\n')
         fp.close()
