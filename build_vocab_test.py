@@ -26,10 +26,18 @@ def read_corpus(corpus_path):
 def main():
    
     vocab_path = "data_path/word2id_de.pkl"
-    corpus_path = "data_path/train_data"
+    
+    train_path = "data_path/train_data"
+    test_path = "data_path/test_data"
+    dev_path = "data_path/dev_data"
+    
     min_count = 10
     
-    data = read_corpus(corpus_path)
+    data_train = read_corpus(train_path)
+    data_dev = read_corpus(dev_path)
+    data_test = read_corpus(test_path)
+    
+    data = data_train + data_dev + data_test
     word2id = {}
     
     for sent_, tag_ in data:
