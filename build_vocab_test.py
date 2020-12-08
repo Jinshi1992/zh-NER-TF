@@ -14,8 +14,10 @@ def read_corpus(corpus_path):
     for line in lines:
         if line != '\n':
             char = line.strip().split(' ')[0]
+            proto = line.strip().split(' ')[1]
             label = line.strip().split(' ')[-1]
             sent_.append(char)
+            sent_.append(proto)
             tag_.append(label)
         else:
             data.append((sent_, tag_))
