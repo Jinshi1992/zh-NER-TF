@@ -13,8 +13,7 @@ def read_corpus(corpus_path):
     sent_, tag_ = [], []
     for line in lines:
         if line != '\n':
-            char = line.strip().split(' ')[0]
-            label = line.strip().split(' ')[1]
+            [char, label] = line.strip().split()
             sent_.append(char)
             tag_.append(label)
         else:
@@ -31,7 +30,7 @@ def main():
     test_path = "data_path/test_data"
     #dev_path = "data_path/dev_data"
     
-    min_count = 10
+    min_count = 3
     
     data_train = read_corpus(train_path)
     #data_dev = read_corpus(dev_path)
