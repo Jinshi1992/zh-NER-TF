@@ -14,10 +14,10 @@ def read_corpus(corpus_path):
     for line in lines:
         if line != '\n':
             char = line.strip().split(' ')[0]
-            proto = line.strip().split(' ')[1]
+            #proto = line.strip().split(' ')[1]
             label = line.strip().split(' ')[-1]
             sent_.append(char)
-            sent_.append(proto)
+            #sent_.append(proto)
             tag_.append(label)
         else:
             data.append((sent_, tag_))
@@ -27,7 +27,7 @@ def read_corpus(corpus_path):
     
 def main():
    
-    vocab_path = "data_path/word2id_de.pkl"
+    vocab_path = "data_path/word2id_zh_2.pkl"
     
     train_path = "data_path/train_data"
     test_path = "data_path/test_data"
@@ -36,10 +36,10 @@ def main():
     min_count = 10
     
     data_train = read_corpus(train_path)
-    data_dev = read_corpus(dev_path)
+    #data_dev = read_corpus(dev_path)
     data_test = read_corpus(test_path)
     
-    data = data_train + data_dev + data_test
+    data = data_train + data_test
     word2id = {}
     
     for sent_, tag_ in data:
