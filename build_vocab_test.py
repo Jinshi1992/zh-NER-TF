@@ -28,7 +28,7 @@ def main():
     
     train_path = "data_path/train_data"
     test_path = "data_path/test_data"
-    dev_path = "data_path/dev_data"
+    #dev_path = "data_path/dev_data"
     
     min_count = 10
     
