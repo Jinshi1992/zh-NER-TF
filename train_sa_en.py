@@ -6,7 +6,7 @@ import datetime
 import time
 import os
 
-tf.flags.DEFINE_string('data_dir', 'data/Kaggle',
+tf.flags.DEFINE_string('data_dir', 'data_path',
                        'Data directory containing \'data.csv\' (must have columns \'SentimentText\' and \'Sentiment\').'
                        ' Intermediate files will automatically be stored here')
 tf.flags.DEFINE_string('stopwords_file', 'data/stopwords.txt',
@@ -17,21 +17,21 @@ tf.flags.DEFINE_string('checkpoints_root', 'checkpoints',
                        'Checkpoints directory. Parameters will be saved there')
 tf.flags.DEFINE_string('summaries_dir', 'logs',
                        'Directory where TensorFlow summaries will be stored')
-tf.flags.DEFINE_integer('batch_size', 100,
+tf.flags.DEFINE_integer('batch_size', 64,
                         'Batch size')
 tf.flags.DEFINE_integer('train_steps', 300,
                         'Number of training steps')
-tf.flags.DEFINE_integer('hidden_size', 75,
+tf.flags.DEFINE_integer('hidden_size', 300,
                         'Hidden size of LSTM layer')
-tf.flags.DEFINE_integer('embedding_size', 75,
+tf.flags.DEFINE_integer('embedding_size', 300,
                         'Size of embeddings layer')
 tf.flags.DEFINE_integer('random_state', 0,
                         'Random state used for data splitting. Default is 0')
-tf.flags.DEFINE_float('learning_rate', 0.01,
+tf.flags.DEFINE_float('learning_rate', 0.001,
                       'RMSProp learning rate')
 tf.flags.DEFINE_float('test_size', 0.2,
                       '0<test_size<1. Proportion of the dataset to be included in the test split.')
-tf.flags.DEFINE_float('dropout_keep_prob', 0.5,
+tf.flags.DEFINE_float('dropout_keep_prob', 1.0,
                       '0<dropout_keep_prob<=1. Dropout keep-probability')
 tf.flags.DEFINE_integer('sequence_len', None,
                         'Maximum sequence length. Let m be the maximum sequence length in the'
