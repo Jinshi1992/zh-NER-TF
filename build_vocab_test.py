@@ -8,18 +8,19 @@ def read_corpus(corpus_path):
     :return: data
     """
     data = []
-    with open(corpus_path, encoding='utf-8') as fr:
-        lines = fr.readlines()
-    sent_, tag_ = [], []
-    for line in lines:
-        if line != '\n':
-            [char, label] = line.strip().split()
-            sent_.append(char)
-            tag_.append(label)
-        else:
-            data.append((sent_, tag_))
-            sent_, tag_ = [], []
+    
+    f = open(corpus_path, 'r')
+    lines = []
+    for line in f:
+      lines.append(line)
 
+    for i, line in enumerate(lines):
+      if i == 0:
+            continue
+      guid = "%s-%s" % (set_type, i)
+      split_line=line.strip().split('+++$+++')
+      sent = tokenization.convert_to_unicode(split_line[1])
+    
     return data
     
 def main():
