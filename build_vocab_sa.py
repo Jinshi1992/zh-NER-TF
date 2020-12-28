@@ -19,7 +19,9 @@ def read_corpus(corpus_path):
             continue
       guid = "%s-%s" % (set_type, i)
       split_line=line.strip().split('+++$+++')
-      sent = tokenization.convert_to_unicode(split_line[1])
+      sent = split_line[1]
+      words = sent.strip().split(' ') #把一个sentence的word都打散
+      data.append(words) # 将当前句子的数组添加到data里面
     
     return data
     
