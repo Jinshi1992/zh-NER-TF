@@ -17,7 +17,6 @@ def read_corpus(corpus_path):
     for i, line in enumerate(lines):
       if i == 0:
             continue
-      guid = "%s-%s" % (set_type, i)
       split_line=line.strip().split('+++$+++')
       sent = split_line[1]
       words = sent.strip().split(' ') #把一个sentence的word都打散
