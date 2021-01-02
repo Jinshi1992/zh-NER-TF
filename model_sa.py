@@ -41,7 +41,6 @@ class BiLSTM_CRF(object):
         self.init_op()
 
     def add_placeholders(self):
-        self.word_ids = tf.placeholder(tf.int32, shape=[None, None], name="word_ids")
         self.labels = tf.placeholder(tf.int32, shape=[None, None], name="labels")
         self.sequence_lengths = tf.placeholder(tf.int32, shape=[None], name="sequence_lengths")
 
@@ -137,7 +136,6 @@ class BiLSTM_CRF(object):
 
     def add_summary(self, sess):
         """
-
         :param sess:
         :return:
         """
@@ -146,7 +144,6 @@ class BiLSTM_CRF(object):
 
     def train(self, train, dev):
         """
-
         :param train:
         :param dev:
         :return:
@@ -170,7 +167,6 @@ class BiLSTM_CRF(object):
 
     def demo_one(self, sess, sent):
         """
-
         :param sess:
         :param sent: 
         :return:
@@ -187,7 +183,6 @@ class BiLSTM_CRF(object):
 
     def run_one_epoch(self, sess, train, dev, tag2label, epoch, saver):
         """
-
         :param sess:
         :param train:
         :param dev:
@@ -225,7 +220,6 @@ class BiLSTM_CRF(object):
 
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
         """
-
         :param seqs:
         :param labels:
         :param lr:
@@ -248,7 +242,6 @@ class BiLSTM_CRF(object):
 
     def dev_one_epoch(self, sess, dev):
         """
-
         :param sess:
         :param dev:
         :return:
@@ -262,7 +255,6 @@ class BiLSTM_CRF(object):
 
     def predict_one_batch(self, sess, seqs):
         """
-
         :param sess:
         :param seqs:
         :return: label_list
@@ -285,7 +277,6 @@ class BiLSTM_CRF(object):
 
     def evaluate(self, label_list, seq_len_list, data, epoch=None):
         """
-
         :param label_list:
         :param seq_len_list:
         :param data:
@@ -312,4 +303,3 @@ class BiLSTM_CRF(object):
         metric_path = os.path.join(self.result_path, 'result_metric_' + epoch_num)
         for _ in conlleval(model_predict, label_path, metric_path):
             self.logger.info(_)
-

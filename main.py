@@ -3,7 +3,7 @@ import numpy as np
 import os, argparse, time, random
 from model import BiLSTM_CRF
 from utils import str2bool, get_logger, get_entity
-from data_en import read_corpus, read_dictionary, tag2label, random_embedding
+from data_zh import read_corpus, read_dictionary, tag2label, random_embedding
 
 
 ## Session configuration
@@ -36,7 +36,7 @@ args = parser.parse_args()
 
 
 ## get char embeddings
-word2id = read_dictionary(os.path.join('.', args.train_data, 'word2id_de.pkl'))
+word2id = read_dictionary(os.path.join('.', args.train_data, 'word2id_zh.pkl'))
 if args.pretrain_embedding == 'random':
     embeddings = random_embedding(word2id, args.embedding_dim)
 else:
