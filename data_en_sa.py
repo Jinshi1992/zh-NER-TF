@@ -17,19 +17,20 @@ def read_corpus(corpus_path):
     :return: data
     """
     data = []
-    with open(corpus_path, encoding='utf-8') as fr:
-        lines = fr.readlines()
-    sent_, tag_ = [], []
-    for line in lines:
-        if line != '\n':
-            char = line.strip().split(' ')[0]
-            label = line.strip().split(' ')[-1]
-            sent_.append(char)
-            tag_.append(label)
-        else:
-            data.append((sent_, tag_))
-            sent_, tag_ = [], []
+    
+    f = open(corpus_path, 'r')
+    lines = []
+    for line in f:
+      lines.append(line)
 
+    for i, line in enumerate(lines):
+      if i == 0:
+            continue
+      split_line=line.strip().split('+++$+++')
+      sent = split_line[1]
+      words = sent.strip().split(' ') #把一个sentence的word都打散
+      data.append(words) # 将当前句子的数组添加到data里面
+      
     return data
 
 
@@ -43,8 +44,8 @@ def vocab_build(vocab_path, corpus_path, min_count):
     data = read_corpus(corpus_path)
     word2id = {}
     
-    for sent_, tag_ in data:
-        for word in sent_:
+    for words in data:
+        for word in words:
             if word.isdigit():
                 word = '<NUM>'
             if word not in word2id:
