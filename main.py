@@ -75,7 +75,6 @@ get_logger(log_path).info(str(args))
 ## training model
 if args.mode == 'train':
     model = BiLSTM_CRF(args, embeddings, tag2label, word2id, paths, config=config)
-    print(self.labels)
     model.build_graph()
 
     ## hyperparameters-tuning, split train/dev
