@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow.contrib.rnn import LSTMCell
 from tensorflow.contrib.crf import crf_log_likelihood
 from tensorflow.contrib.crf import viterbi_decode
-from data_zh import pad_sequences, batch_yield
+from data_en_sa import pad_sequences, batch_yield
 from utils import get_logger
 from eval import conlleval
 
