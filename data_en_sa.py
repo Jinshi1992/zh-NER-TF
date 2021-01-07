@@ -140,7 +140,7 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
             seqs, labels = [], []
 
         seqs.append(sentid)
-        labels.append(label)
+        labels.append(label[0])
 
     if len(seqs) != 0:
         yield seqs, labels
