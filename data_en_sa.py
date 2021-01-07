@@ -27,7 +27,7 @@ def read_corpus(corpus_path):
       label = split_line[0]
       sent = split_line[1]
       words = sent.strip().split(' ') #把一个sentence的word都打散
-      data.append(sent, label) # 将当前句子的数组添加到data里面
+      data.append((sent, label)) # 将当前句子的数组添加到data里面
       
     return data
 
