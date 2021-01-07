@@ -2,11 +2,8 @@ import sys, pickle, os, random
 import numpy as np
 
 ## tags, BIO
-tag2label = {"O": 0,
-             "B-MISC": 1, "I-MISC": 2,
-             "B-LOC": 3, "I-LOC": 4,
-             "B-ORG": 5, "I-ORG": 6,
-             "B-PER": 7, "I-PER": 8
+tag2label = {"0": 0,
+             "1": 1
              }
 
 
@@ -27,9 +24,10 @@ def read_corpus(corpus_path):
       if i == 0:
             continue
       split_line=line.strip().split('+++$+++')
+      label = split_line[0]
       sent = split_line[1]
       words = sent.strip().split(' ') #把一个sentence的word都打散
-      data.append(words) # 将当前句子的数组添加到data里面
+      data.append(sent, label) # 将当前句子的数组添加到data里面
       
     return data
 
@@ -133,15 +131,15 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
         random.shuffle(data)
 
     seqs, labels = [], []
-    for (sent_, tag_) in data:
-        sent_ = sentence2id(sent_, vocab)
+    for (sent, label) in data:
+        sentid = sentence2id(sent_, vocab)
         label_ = [tag2label[tag] for tag in tag_]
 
         if len(seqs) == batch_size:
             yield seqs, labels
             seqs, labels = [], []
 
-        seqs.append(sent_)
+        seqs.append(sentid)
         labels.append(label_)
 
     if len(seqs) != 0:
