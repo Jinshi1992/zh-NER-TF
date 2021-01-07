@@ -91,7 +91,8 @@ class BiLSTM_CRF(object):
             #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
             self.logits = tf.matmul(output, W) + b
             pred = tf.nn.softmax(self.logits)
-
+            print(self.labels)
+            
     def loss_op(self):
         if self.CRF:
             log_likelihood, self.transition_params = crf_log_likelihood(inputs=self.logits,
