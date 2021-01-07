@@ -85,9 +85,12 @@ class BiLSTM_CRF(object):
 
             s = tf.shape(output)
             output = tf.reshape(output, [-1, 2*self.hidden_dim])
-            pred = tf.matmul(output, W) + b
+            #proj =  proj = tf.reduce_sum(outputs, 0)/mask_sum
+            #pred = tf.matmul(output, W) + b
 
-            self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
+            #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
+            self.logits = tf.matmul(output, W) + b
+            pred = tf.nn.softmax(logits)
 
     def loss_op(self):
         if self.CRF:
