@@ -46,6 +46,7 @@ class BiLSTM_CRF(object):
 
         self.dropout_pl = tf.placeholder(dtype=tf.float32, shape=[], name="dropout")
         self.lr_pl = tf.placeholder(dtype=tf.float32, shape=[], name="lr")
+        self.word_ids = tf.placeholder(tf.int32, shape=[None, None], name="word_ids")
 
     def lookup_layer_op(self):
         with tf.variable_scope("words"):
