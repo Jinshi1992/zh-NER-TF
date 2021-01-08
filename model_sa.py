@@ -84,7 +84,9 @@ class BiLSTM_CRF(object):
                                 dtype=tf.float32)
 
             s = tf.shape(output)
-            output = tf.reshape(output, [-1, 2*self.hidden_dim])
+            
+            output = tf.reduce_mean(output, reduction_indices=[1])
+            #output = tf.reshape(output, [-1, 2*self.hidden_dim])
             #proj =  proj = tf.reduce_sum(outputs, 0)/mask_sum
             #pred = tf.matmul(output, W) + b
 
