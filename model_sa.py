@@ -41,7 +41,7 @@ class BiLSTM_CRF(object):
         self.init_op()
 
     def add_placeholders(self):
-        self.labels = tf.placeholder(tf.int64, shape=[self.batch_size], name="labels")
+        self.labels = tf.placeholder(tf.int64, shape=[None, None], name="labels")
         self.sequence_lengths = tf.placeholder(tf.int32, shape=[None], name="sequence_lengths")
 
         self.dropout_pl = tf.placeholder(dtype=tf.float32, shape=[], name="dropout")
@@ -86,11 +86,11 @@ class BiLSTM_CRF(object):
             s = tf.shape(output)
             output = tf.reshape(output, [-1, 2*self.hidden_dim])
             #proj =  proj = tf.reduce_sum(outputs, 0)/mask_sum
-            #pred = tf.matmul(output, W) + b
+            pred = tf.matmul(output, W) + b
 
-            #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
-            self.logits = tf.matmul(output, W) + b
-            pred = tf.nn.softmax(self.logits)
+            self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
+            #self.logits = tf.matmul(output, W) + b
+            #pred = tf.nn.softmax(self.logits)
             
             
     def loss_op(self):
