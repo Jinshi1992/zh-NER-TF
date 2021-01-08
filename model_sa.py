@@ -41,7 +41,7 @@ class BiLSTM_CRF(object):
         self.init_op()
 
     def add_placeholders(self):
-        self.labels = tf.placeholder(tf.int32, shape=[None, None], name="labels")
+        self.labels = tf.placeholder(tf.int64, shape=[None], name="labels")
         self.sequence_lengths = tf.placeholder(tf.int32, shape=[None], name="sequence_lengths")
 
         self.dropout_pl = tf.placeholder(dtype=tf.float32, shape=[], name="dropout")
@@ -84,11 +84,17 @@ class BiLSTM_CRF(object):
                                 dtype=tf.float32)
 
             s = tf.shape(output)
-            output = tf.reshape(output, [-1, 2*self.hidden_dim])
-            pred = tf.matmul(output, W) + b
+            
+            output = tf.reduce_mean(output, reduction_indices=[1])
+            #output = tf.reshape(output, [-1, 2*self.hidden_dim])
+            #proj =  proj = tf.reduce_sum(outputs, 0)/mask_sum
+            #pred = tf.matmul(output, W) + b
 
-            self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
-
+            #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
+            self.logits = tf.matmul(output, W) + b
+            pred = tf.nn.softmax(self.logits)
+            
+            
     def loss_op(self):
         if self.CRF:
             log_likelihood, self.transition_params = crf_log_likelihood(inputs=self.logits,
@@ -99,8 +105,8 @@ class BiLSTM_CRF(object):
         else:
             losses = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits,
                                                                     labels=self.labels)
-            mask = tf.sequence_mask(self.sequence_lengths)
-            losses = tf.boolean_mask(losses, mask)
+            #mask = tf.sequence_mask(self.sequence_lengths)
+            #losses = tf.boolean_mask(losses, mask)
             self.loss = tf.reduce_mean(losses)
 
         tf.summary.scalar("loss", self.loss)
@@ -232,8 +238,8 @@ class BiLSTM_CRF(object):
         feed_dict = {self.word_ids: word_ids,
                      self.sequence_lengths: seq_len_list}
         if labels is not None:
-            labels_, _ = pad_sequences(labels, pad_mark=0)
-            feed_dict[self.labels] = labels_
+            #labels_, _ = pad_sequences(labels, pad_mark=0)
+            feed_dict[self.labels] = labels
         if lr is not None:
             feed_dict[self.lr_pl] = lr
         if dropout is not None:
