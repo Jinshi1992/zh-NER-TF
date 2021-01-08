@@ -236,7 +236,7 @@ class BiLSTM_CRF(object):
         feed_dict = {self.word_ids: word_ids,
                      self.sequence_lengths: seq_len_list}
         if labels is not None:
-            #labels_, _ = pad_sequences(labels, pad_mark=0)
+            labels_, _ = pad_sequences(labels, pad_mark=0)
             feed_dict[self.labels] = labels
         if lr is not None:
             feed_dict[self.lr_pl] = lr
