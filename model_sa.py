@@ -41,7 +41,7 @@ class BiLSTM_CRF(object):
         self.init_op()
 
     def add_placeholders(self):
-        self.labels = tf.placeholder(tf.int64, shape=[None], name="labels")
+        self.labels = tf.placeholder(tf.int64, shape=[None, None], name="labels")
         self.sequence_lengths = tf.placeholder(tf.int32, shape=[None], name="sequence_lengths")
 
         self.dropout_pl = tf.placeholder(dtype=tf.float32, shape=[], name="dropout")
@@ -236,7 +236,7 @@ class BiLSTM_CRF(object):
         feed_dict = {self.word_ids: word_ids,
                      self.sequence_lengths: seq_len_list}
         if labels is not None:
-            labels_, _ = pad_sequences(labels, pad_mark=0)
+            #labels_, _ = pad_sequences(labels, pad_mark=0)
             feed_dict[self.labels] = labels
         if lr is not None:
             feed_dict[self.lr_pl] = lr
