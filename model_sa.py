@@ -74,7 +74,7 @@ class BiLSTM_CRF(object):
 
         with tf.variable_scope("proj"):
             W = tf.get_variable(name="W",
-                                shape=[2 * self.hidden_dim, self.num_tags],
+                                shape=[self.hidden_dim, self.num_tags],
                                 initializer=tf.contrib.layers.xavier_initializer(),
                                 dtype=tf.float32)
 
