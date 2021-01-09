@@ -93,6 +93,8 @@ class BiLSTM_CRF(object):
             #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
             self.logits = tf.matmul(output, W) + b
             pred = tf.nn.softmax(self.logits)
+            correct_prediction = tf.equal(tf.argmax(pred,1), labels)
+            self.accuracy = tf.reduce_sum(tf.cast(correct_prediction, tf.float32))
             
             
     def loss_op(self):
@@ -110,6 +112,7 @@ class BiLSTM_CRF(object):
             self.loss = tf.reduce_mean(losses)
 
         tf.summary.scalar("loss", self.loss)
+        tf.summary.scalar("Accuracy", self.accuracy)
 
     def softmax_pred_op(self):
         if not self.CRF:
@@ -209,7 +212,7 @@ class BiLSTM_CRF(object):
             step_num = epoch * num_batches + step + 1
 
             feed_dict, _ = self.get_feed_dict(seqs, labels, self.lr, self.dropout_keep_prob)
-            _, loss_train, summary, step_num_ = sess.run([self.train_op, self.loss, self.merged, self.global_step],
+            _, loss_train, summary, step_num_, train_acc= sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy],
                                                          feed_dict=feed_dict)
             if step + 1 == 1 or (step + 1) % 300 == 0 or step + 1 == num_batches:
                 self.logger.info(
@@ -222,8 +225,10 @@ class BiLSTM_CRF(object):
                 saver.save(sess, self.model_path, global_step=step_num)
 
         self.logger.info('===========validation / test===========')
-        label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
-        self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
+        
+        print("Training Accuracy = %.4f, time = %.3f seconds\n"%(train_acc, time.time()-start_time))
+        #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
+        #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
 
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
         """
