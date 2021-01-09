@@ -93,7 +93,7 @@ class BiLSTM_CRF(object):
             #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
             self.logits = tf.matmul(output, W) + b
             pred = tf.nn.softmax(self.logits)
-            correct_prediction = tf.equal(tf.argmax(pred,1), labels)
+            correct_prediction = tf.equal(tf.argmax(pred,1), self.labels)
             self.accuracy = tf.reduce_sum(tf.cast(correct_prediction, tf.float32))
             
             
