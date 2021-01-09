@@ -16,6 +16,7 @@ class BiLSTM_CRF(object):
         self.hidden_dim = args.hidden_dim
         self.embeddings = embeddings
         self.CRF = args.CRF
+        self.max_seq_length = args.max_seq_length
         self.update_embedding = args.update_embedding
         self.dropout_keep_prob = args.dropout
         self.optimizer = args.optimizer
@@ -30,6 +31,7 @@ class BiLSTM_CRF(object):
         self.logger = get_logger(paths['log_path'])
         self.result_path = paths['result_path']
         self.config = config
+        self.embedding_dim = args.embedding_dim
 
     def build_graph(self):
         self.add_placeholders()
@@ -41,23 +43,24 @@ class BiLSTM_CRF(object):
         self.init_op()
 
     def add_placeholders(self):
-        self.labels = tf.placeholder(tf.int64, shape=[None], name="labels")
+        self.labels = tf.placeholder(tf.int64, shape=[self.batch_size, self.num_tags], name="labels")
         self.sequence_lengths = tf.placeholder(tf.int32, shape=[None], name="sequence_lengths")
 
         self.dropout_pl = tf.placeholder(dtype=tf.float32, shape=[], name="dropout")
         self.lr_pl = tf.placeholder(dtype=tf.float32, shape=[], name="lr")
-        self.word_ids = tf.placeholder(tf.int32, shape=[None, None], name="word_ids")
+        self.word_ids = tf.placeholder(tf.int32, shape=[self.batch_size, self.max_seq_length], name="word_ids")
 
     def lookup_layer_op(self):
         with tf.variable_scope("words"):
-            _word_embeddings = tf.Variable(self.embeddings,
-                                           dtype=tf.float32,
-                                           trainable=self.update_embedding,
-                                           name="_word_embeddings")
+            #_word_embeddings = tf.Variable(self.embeddings,
+            #                               dtype=tf.float32,
+            #                               trainable=self.update_embedding,
+            #                               name="_word_embeddings")
+            _word_embeddings = tf.Variable(tf.zeros([self.batch_size, self.max_seq_length, self.embedding_dim]),dtype=tf.float32)
             word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
                                                      ids=self.word_ids,
                                                      name="word_embeddings")
-        self.word_embeddings =  tf.nn.dropout(word_embeddings, self.dropout_pl)
+        #self.word_embeddings =  tf.nn.dropout(word_embeddings, self.dropout_pl)
 
     def biLSTM_layer_op(self):
         with tf.variable_scope("bi-lstm"):
@@ -73,17 +76,26 @@ class BiLSTM_CRF(object):
             output = tf.nn.dropout(output, self.dropout_pl)
 
         with tf.variable_scope("proj"):
-            W = tf.get_variable(name="W",
-                                shape=[2 * self.hidden_dim, self.num_tags],
-                                initializer=tf.contrib.layers.xavier_initializer(),
-                                dtype=tf.float32)
-
-            b = tf.get_variable(name="b",
-                                shape=[self.num_tags],
-                                initializer=tf.zeros_initializer(),
-                                dtype=tf.float32)
-
+            #W = tf.get_variable(name="W",
+            #                   shape=[2 * self.hidden_dim, self.num_tags],
+            #                    initializer=tf.contrib.layers.xavier_initializer(),
+            #                    dtype=tf.float32)
+            W = tf.Variable(tf.truncated_normal([self.hidden_dim, self.num_tags]))
+            
+            #b = tf.get_variable(name="b",
+            #                    shape=[self.num_tags],
+            #                    initializer=tf.zeros_initializer(),
+            #                    dtype=tf.float32)
+            b = tf.Variable(tf.constant(0.1, shape=[self.num_tags]))
+            
             s = tf.shape(output)
+            
+            output = tf.transpose(output, [1, 0, 2])
+            last = tf.gather(output, int(output.get_shape()[0]) - 1)
+            pred = (tf.matmul(last, W) + b)
+            correctPred = tf.equal(tf.argmax(pred,1), tf.argmax(self.labels,1))
+            accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
+            
             
             output = tf.reduce_mean(output, reduction_indices=[1])
             #output = tf.reshape(output, [-1, 2*self.hidden_dim])
@@ -91,10 +103,10 @@ class BiLSTM_CRF(object):
             #pred = tf.matmul(output, W) + b
 
             #self.logits = tf.reshape(pred, [-1, s[1], self.num_tags])
-            self.logits = tf.matmul(output, W) + b
-            pred = tf.nn.softmax(self.logits)
-            correct_prediction = tf.equal(tf.argmax(pred,1), self.labels)
-            self.accuracy = tf.reduce_sum(tf.cast(correct_prediction, tf.float32))
+            #self.logits = tf.matmul(output, W) + b
+            #pred = tf.nn.softmax(self.logits)
+            #correct_prediction = tf.equal(tf.argmax(pred,1), self.labels)
+            #self.accuracy = tf.reduce_sum(tf.cast(correct_prediction, tf.float32))
             
             
     def loss_op(self):
@@ -105,8 +117,9 @@ class BiLSTM_CRF(object):
             self.loss = -tf.reduce_mean(log_likelihood)
 
         else:
-            losses = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.logits,
+            losses = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=pred,
                                                                     labels=self.labels)
+
             #mask = tf.sequence_mask(self.sequence_lengths)
             #losses = tf.boolean_mask(losses, mask)
             self.loss = tf.reduce_mean(losses)
