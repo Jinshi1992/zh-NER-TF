@@ -226,7 +226,7 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         
-        print("Training Accuracy = %.4f, time = %.3f seconds\n"%(train_acc, time.time()-start_time))
+        print("Training Accuracy = %.4f, time = %.3f seconds\n"%(train_acc, time.time()))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
 
