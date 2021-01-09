@@ -93,7 +93,7 @@ class BiLSTM_CRF(object):
             output = tf.transpose(output, [1, 0, 2])
             output = tf.reshape(output, [-1, 2*self.hidden_dim])
             #last = tf.gather(output, int(output.get_shape()[0]) - 1)
-            pred = (tf.matmul(last, W) + b)
+            pred = tf.matmul(output, W) + b
             correctPred = tf.equal(tf.argmax(pred,1), tf.argmax(self.labels,1))
             accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
             
