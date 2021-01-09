@@ -76,22 +76,23 @@ class BiLSTM_CRF(object):
             output = tf.nn.dropout(output, self.dropout_pl)
 
         with tf.variable_scope("proj"):
-            #W = tf.get_variable(name="W",
-            #                   shape=[2 * self.hidden_dim, self.num_tags],
-            #                    initializer=tf.contrib.layers.xavier_initializer(),
-            #                    dtype=tf.float32)
-            W = tf.Variable(tf.truncated_normal([self.hidden_dim, self.num_tags]))
+            W = tf.get_variable(name="W",
+                               shape=[2 * self.hidden_dim, self.num_tags],
+                                initializer=tf.contrib.layers.xavier_initializer(),
+                                dtype=tf.float32)
+            #W = tf.Variable(tf.truncated_normal([self.hidden_dim, self.num_tags]))
             
-            #b = tf.get_variable(name="b",
-            #                    shape=[self.num_tags],
-            #                    initializer=tf.zeros_initializer(),
-            #                    dtype=tf.float32)
-            b = tf.Variable(tf.constant(0.1, shape=[self.num_tags]))
+            b = tf.get_variable(name="b",
+                                shape=[self.num_tags],
+                                initializer=tf.zeros_initializer(),
+                                dtype=tf.float32)
+            #b = tf.Variable(tf.constant(0.1, shape=[self.num_tags]))
             
             s = tf.shape(output)
             
             output = tf.transpose(output, [1, 0, 2])
-            last = tf.gather(output, int(output.get_shape()[0]) - 1)
+            output = tf.reshape(output, [-1, 2*self.hidden_dim])
+            #last = tf.gather(output, int(output.get_shape()[0]) - 1)
             pred = (tf.matmul(last, W) + b)
             correctPred = tf.equal(tf.argmax(pred,1), tf.argmax(self.labels,1))
             accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
