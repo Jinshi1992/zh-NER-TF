@@ -76,8 +76,8 @@ class BiLSTM_CRF(object):
             cell_fw = tf.contrib.rnn.LSTMBlockFusedCell(self.hidden_dim)
             cell_bw = tf.contrib.rnn.LSTMBlockFusedCell(self.hidden_dim)
             cell_bw = tf.contrib.rnn.TimeReversedFusedRNN(cell_bw)
-            output_fw, _ = cell_fw(self.word_embeddings, dtype=tf.float32, sequence_length=self.sequence_lengths)
-            output_bw, _ = cell_bw(self.word_embeddings, dtype=tf.float32, sequence_length=self.sequence_lengths)
+            output_fw_seq, _ = cell_fw(self.word_embeddings, dtype=tf.float32, sequence_length=self.sequence_lengths)
+            output_bw_seq, _ = cell_bw(self.word_embeddings, dtype=tf.float32, sequence_length=self.sequence_lengths)
             
             
             output = tf.concat([output_fw_seq, output_bw_seq], axis=-1)
