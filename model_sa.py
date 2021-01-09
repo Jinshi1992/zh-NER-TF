@@ -64,14 +64,22 @@ class BiLSTM_CRF(object):
 
     def biLSTM_layer_op(self):
         with tf.variable_scope("bi-lstm"):
-            cell_fw = LSTMCell(self.hidden_dim)
-            cell_bw = LSTMCell(self.hidden_dim)
-            (output_fw_seq, output_bw_seq), _ = tf.nn.bidirectional_dynamic_rnn(
-                cell_fw=cell_fw,
-                cell_bw=cell_bw,
-                inputs=self.word_embeddings,
-                sequence_length=self.sequence_lengths,
-                dtype=tf.float32)
+            #cell_fw = LSTMCell(self.hidden_dim)
+            #cell_bw = LSTMCell(self.hidden_dim)
+            #(output_fw_seq, output_bw_seq), _ = tf.nn.bidirectional_dynamic_rnn(
+            #    cell_fw=cell_fw,
+             #   cell_bw=cell_bw,
+            #    inputs=self.word_embeddings,
+            #    #sequence_length=self.sequence_lengths,
+            #    dtype=tf.float32)
+            
+            cell_fw = tf.contrib.rnn.LSTMBlockFusedCell(self.hidden_dim)
+            cell_bw = tf.contrib.rnn.LSTMBlockFusedCell(self.hidden_dim)
+            cell_bw = tf.contrib.rnn.TimeReversedFusedRNN(cell_bw)
+            output_fw, _ = lstm_cell_fw(self.word_embeddings, dtype=tf.float32, sequence_length=self.sequence_lengths)
+            output_bw, _ = lstm_cell_bw(self.word_embeddings, dtype=tf.float32, sequence_length=self.sequence_lengths)
+            
+            
             output = tf.concat([output_fw_seq, output_bw_seq], axis=-1)
             output = tf.nn.dropout(output, self.dropout_pl)
 
