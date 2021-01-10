@@ -141,7 +141,7 @@ class BiLSTM_CRF(object):
 
     def softmax_pred_op(self):
         if not self.CRF:
-            self.labels_softmax_ = tf.argmax(self.pred, axis=-1)
+            self.labels_softmax_ = tf.argmax(pred, axis=-1)
             self.labels_softmax_ = tf.cast(self.labels_softmax_, tf.int32)
 
     def trainstep_op(self):
