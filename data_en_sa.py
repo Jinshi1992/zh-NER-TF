@@ -108,7 +108,7 @@ def pad_sequences(sequences, pad_mark=0):
     :param pad_mark:
     :return:
     """
-    max_len = max(map(lambda x : len(x), sequences))
+    max_len = max(map(lambda x : len(x), sequences)) # 找出一堆seq里面最长的len
     seq_list, seq_len_list = [], []
     for seq in sequences:
         seq = list(seq)
