@@ -3,8 +3,8 @@ import numpy as np
 import tensorflow as tf
 
 ## tags, BIO
-tag2label = {"0": 0,
-             "1": 1
+tag2label = {"0": [0,1],
+             "1": [1,0]
              }
 
 
