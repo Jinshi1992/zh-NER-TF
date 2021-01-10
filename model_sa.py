@@ -104,8 +104,8 @@ class BiLSTM_CRF(object):
             output = tf.transpose(output, [1, 0, 2])
             #output = tf.reshape(output, [-1, 2*self.hidden_dim])
             output = tf.gather(output, int(output.get_shape()[0]) - 1)
-            pred = tf.matmul(output, W) + b
-            correctPred = tf.equal(tf.argmax(pred,1), tf.argmax(self.labels,1))
+            self.pred = tf.matmul(output, W) + b
+            correctPred = tf.equal(tf.argmax(self.pred,1), tf.argmax(self.labels,1))
             accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
             
             
@@ -129,7 +129,7 @@ class BiLSTM_CRF(object):
             self.loss = -tf.reduce_mean(log_likelihood)
 
         else:
-            losses = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=pred,
+            losses = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=self.pred,
                                                                     labels=self.labels)
 
             #mask = tf.sequence_mask(self.sequence_lengths)
@@ -141,7 +141,7 @@ class BiLSTM_CRF(object):
 
     def softmax_pred_op(self):
         if not self.CRF:
-            self.labels_softmax_ = tf.argmax(pred, axis=-1)
+            self.labels_softmax_ = tf.argmax(self.pred, axis=-1)
             self.labels_softmax_ = tf.cast(self.labels_softmax_, tf.int32)
 
     def trainstep_op(self):
