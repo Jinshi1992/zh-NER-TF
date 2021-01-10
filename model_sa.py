@@ -263,7 +263,7 @@ class BiLSTM_CRF(object):
         :param dropout:
         :return: feed_dict
         """
-        word_ids, seq_len_list = pad_sequences(seqs, pad_mark=0)
+        word_ids, seq_len_list = pad_sequences(seqs, self.max_seq_length, pad_mark=0)
 
         feed_dict = {self.word_ids: word_ids,
                      self.sequence_lengths: seq_len_list}
