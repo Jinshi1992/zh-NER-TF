@@ -255,7 +255,7 @@ class BiLSTM_CRF(object):
         print("Training Accuracy = %.4f\n"%(train_acc))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
-        dev_acc = dev_one_epoch(sess, dev)
+        dev_acc = self.dev_one_epoch(sess, dev)
         print("Validation Accuracy = %.4f\n"%(dev_acc))
        
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
@@ -289,7 +289,7 @@ class BiLSTM_CRF(object):
         label_list, seq_len_list = [], []
         for seqs, labels in batch_yield(dev, self.batch_size, self.vocab, self.tag2label, shuffle=False):
             
-            feed_dict, _ = self.get_feed_dict(seqs, labels)
+            feed_dict, _ = self.get_feed_dict(seqs, labels,dropout=1.0)
             loss_dev, summary, dev_acc = sess.run([self.loss, self.merged, self.accuracy],
                                                  feed_dict=feed_dict)
         return dev_acc
