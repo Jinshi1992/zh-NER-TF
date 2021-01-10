@@ -289,7 +289,7 @@ class BiLSTM_CRF(object):
         label_list, seq_len_list = [], []
         for seqs, labels in batch_yield(dev, self.batch_size, self.vocab, self.tag2label, shuffle=False):
             
-            feed_dict, _ = self.get_feed_dict(seqs, labels)
+            feed_dict, _ = self.get_feed_dict(seqs, labels,dropout=1.0)
             loss_dev, summary, dev_acc = sess.run([self.loss, self.merged, self.accuracy],
                                                  feed_dict=feed_dict)
         return dev_acc
