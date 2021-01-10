@@ -137,7 +137,7 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
         sentid = sentence2id(sent, vocab)
         #label_ = [tag2label[tag] for tag in label]
 
-        if len(seqs) == batch_size + 1:
+        if len(seqs) == batch_size:
             yield seqs, labels
             seqs, labels = [], []
 
