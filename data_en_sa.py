@@ -99,8 +99,8 @@ def random_embedding(batch_size, max_seq_length, num_dim):
     :return:
     """
     #embedding_mat = np.random.uniform(-0.25, 0.25, (len(vocab), embedding_dim))
-    embedding_mat = tf.zeros([batch_size, max_seq_length, num_dim])
-    embedding_mat = np.float32(embedding_mat)
+    embedding_mat = tf.zeros([batch_size, max_seq_length, num_dim], dtype=tf.float32)
+    #embedding_mat = np.float32(embedding_mat)
     return embedding_mat
 
 
