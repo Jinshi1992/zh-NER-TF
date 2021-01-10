@@ -40,6 +40,7 @@ args = parser.parse_args()
 word2id = read_dictionary(os.path.join('.', args.train_data, 'word2id_sa_en.pkl'))
 if args.pretrain_embedding == 'random':
     embeddings = random_embedding(word2id, args.embedding_dim)
+    #embeddings = random_embedding(args.batch_size, args.max_seq_length, args.hidden_dim)
 else:
     embedding_path = 'pretrain_embedding.npy'
     embeddings = np.array(np.load(embedding_path), dtype='float32')

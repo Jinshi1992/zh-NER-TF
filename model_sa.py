@@ -56,45 +56,57 @@ class BiLSTM_CRF(object):
             #                               dtype=tf.float32,
             #                               trainable=self.update_embedding,
             #                               name="_word_embeddings")
-            _word_embeddings = tf.Variable(tf.zeros([self.batch_size, self.max_seq_length, self.embedding_dim]),dtype=tf.float32)
-            word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
-                                                     ids=self.word_ids,
-                                                     name="word_embeddings")
-        #self.word_embeddings =  tf.nn.dropout(word_embeddings, self.dropout_pl)
+            #_word_embeddings = tf.Variable(tf.zeros([self.batch_size, self.max_seq_length, self.embedding_dim]),dtype=tf.float32)
+            
+            #word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
+            #                                         ids=self.word_ids,
+            #                                         name="word_embeddings")
+            word_embeddings = tf.nn.embedding_lookup(self.embeddings,self.word_ids)
+        self.word_embeddings =  tf.nn.dropout(word_embeddings, self.dropout_pl)
 
     def biLSTM_layer_op(self):
         with tf.variable_scope("bi-lstm"):
-            cell_fw = LSTMCell(self.hidden_dim)
-            cell_bw = LSTMCell(self.hidden_dim)
-            (output_fw_seq, output_bw_seq), _ = tf.nn.bidirectional_dynamic_rnn(
-                cell_fw=cell_fw,
-                cell_bw=cell_bw,
-                inputs=self.word_embeddings,
-                sequence_length=self.sequence_lengths,
-                dtype=tf.float32)
+            #cell_fw = LSTMCell(self.hidden_dim)
+            #cell_bw = LSTMCell(self.hidden_dim)
+            #(output_fw_seq, output_bw_seq), _ = tf.nn.bidirectional_dynamic_rnn(
+            #    cell_fw=cell_fw,
+             #   cell_bw=cell_bw,
+            #    inputs=self.word_embeddings,
+            #    #sequence_length=self.sequence_lengths,
+            #    dtype=tf.float32)
+            
+            cell_fw = tf.contrib.rnn.LSTMBlockFusedCell(self.hidden_dim)
+            cell_bw = tf.contrib.rnn.LSTMBlockFusedCell(self.hidden_dim)
+            cell_bw = tf.contrib.rnn.TimeReversedFusedRNN(cell_bw)
+            output_fw_seq, _ = cell_fw(self.word_embeddings, dtype=tf.float32)
+            output_bw_seq, _ = cell_bw(self.word_embeddings, dtype=tf.float32)
+            
+            
             output = tf.concat([output_fw_seq, output_bw_seq], axis=-1)
             output = tf.nn.dropout(output, self.dropout_pl)
 
         with tf.variable_scope("proj"):
-            #W = tf.get_variable(name="W",
-            #                   shape=[2 * self.hidden_dim, self.num_tags],
-            #                    initializer=tf.contrib.layers.xavier_initializer(),
-            #                    dtype=tf.float32)
-            W = tf.Variable(tf.truncated_normal([self.hidden_dim, self.num_tags]))
+            W = tf.get_variable(name="W",
+                                shape=[2 * self.hidden_dim, self.num_tags],
+                                #shape=[self.num_tags, 2 * self.hidden_dim],
+                                initializer=tf.contrib.layers.xavier_initializer(),
+                                dtype=tf.float32)
+            #W = tf.Variable(tf.truncated_normal([self.hidden_dim, self.num_tags]))
             
-            #b = tf.get_variable(name="b",
-            #                    shape=[self.num_tags],
-            #                    initializer=tf.zeros_initializer(),
-            #                    dtype=tf.float32)
-            b = tf.Variable(tf.constant(0.1, shape=[self.num_tags]))
+            b = tf.get_variable(name="b",
+                                shape=[self.num_tags],
+                                initializer=tf.zeros_initializer(),
+                                dtype=tf.float32)
+            #b = tf.Variable(tf.constant(0.1, shape=[self.num_tags]))
             
             s = tf.shape(output)
             
             output = tf.transpose(output, [1, 0, 2])
-            last = tf.gather(output, int(output.get_shape()[0]) - 1)
-            pred = (tf.matmul(last, W) + b)
-            correctPred = tf.equal(tf.argmax(pred,1), tf.argmax(self.labels,1))
-            accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
+            #output = tf.reshape(output, [-1, 2*self.hidden_dim])
+            output = tf.gather(output, int(output.get_shape()[0]) - 1)
+            self.pred = tf.matmul(output, W) + b
+            correctPred = tf.equal(tf.argmax(self.pred,1), tf.argmax(self.labels,1))
+            self.accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
             
             
             output = tf.reduce_mean(output, reduction_indices=[1])
@@ -117,7 +129,7 @@ class BiLSTM_CRF(object):
             self.loss = -tf.reduce_mean(log_likelihood)
 
         else:
-            losses = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=pred,
+            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.pred,
                                                                     labels=self.labels)
 
             #mask = tf.sequence_mask(self.sequence_lengths)
@@ -129,7 +141,7 @@ class BiLSTM_CRF(object):
 
     def softmax_pred_op(self):
         if not self.CRF:
-            self.labels_softmax_ = tf.argmax(self.logits, axis=-1)
+            self.labels_softmax_ = tf.argmax(self.pred, axis=-1)
             self.labels_softmax_ = tf.cast(self.labels_softmax_, tf.int32)
 
     def trainstep_op(self):
@@ -225,6 +237,7 @@ class BiLSTM_CRF(object):
             step_num = epoch * num_batches + step + 1
 
             feed_dict, _ = self.get_feed_dict(seqs, labels, self.lr, self.dropout_keep_prob)
+            
             _, loss_train, summary, step_num_, train_acc= sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy],
                                                          feed_dict=feed_dict)
             if step + 1 == 1 or (step + 1) % 300 == 0 or step + 1 == num_batches:
@@ -239,7 +252,7 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         
-        print("Training Accuracy = %.4f, time = %.3f seconds\n"%(train_acc, time.time()))
+        print("Training Accuracy = %.4f\n"%(train_acc))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
 
@@ -251,7 +264,7 @@ class BiLSTM_CRF(object):
         :param dropout:
         :return: feed_dict
         """
-        word_ids, seq_len_list = pad_sequences(seqs, pad_mark=0)
+        word_ids, seq_len_list = pad_sequences(seqs, self.max_seq_length, pad_mark=0)
 
         feed_dict = {self.word_ids: word_ids,
                      self.sequence_lengths: seq_len_list}

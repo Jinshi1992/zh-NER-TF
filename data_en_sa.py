@@ -1,9 +1,10 @@
 import sys, pickle, os, random
 import numpy as np
+import tensorflow as tf
 
 ## tags, BIO
-tag2label = {"0": 0,
-             "1": 1
+tag2label = {"0": [0,1],
+             "1": [1,0]
              }
 
 
@@ -97,18 +98,19 @@ def random_embedding(vocab, embedding_dim):
     :param embedding_dim:
     :return:
     """
-    embedding_mat = np.random.uniform(-0.25, 0.25, (len(vocab), embedding_dim))
-    embedding_mat = np.float32(embedding_mat)
+    #embedding_mat = np.random.uniform(-0.25, 0.25, (len(vocab), embedding_dim))
+    embedding_mat = tf.zeros([len(vocab), embedding_dim], dtype=tf.float32)
+    #embedding_mat = np.float32(embedding_mat)
     return embedding_mat
 
 
-def pad_sequences(sequences, pad_mark=0):
+def pad_sequences(sequences, max_len, pad_mark=0):
     """
     :param sequences:
     :param pad_mark:
     :return:
     """
-    max_len = max(map(lambda x : len(x), sequences))
+    #max_len_local = max(map(lambda x : len(x), sequences)) # 找出一堆seq里面最长的len
     seq_list, seq_len_list = [], []
     for seq in sequences:
         seq = list(seq)
@@ -140,7 +142,4 @@ def batch_yield(data, batch_size, vocab, tag2label, shuffle=False):
             seqs, labels = [], []
 
         seqs.append(sentid)
-        labels.append(label)
-
-    if len(seqs) != 0:
-        yield seqs, labels
+        labels.append(tag2label[label])
