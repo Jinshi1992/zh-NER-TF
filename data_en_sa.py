@@ -104,13 +104,13 @@ def random_embedding(vocab, embedding_dim):
     return embedding_mat
 
 
-def pad_sequences(sequences, pad_mark=0):
+def pad_sequences(sequences, max_len, pad_mark=0):
     """
     :param sequences:
     :param pad_mark:
     :return:
     """
-    max_len = max(map(lambda x : len(x), sequences)) # 找出一堆seq里面最长的len
+    #max_len = max(map(lambda x : len(x), sequences)) # 找出一堆seq里面最长的len
     seq_list, seq_len_list = [], []
     for seq in sequences:
         seq = list(seq)
