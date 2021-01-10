@@ -1,5 +1,6 @@
 import sys, pickle, os, random
 import numpy as np
+import tensorflow as tf
 
 ## tags, BIO
 tag2label = {"0": 0,
@@ -91,13 +92,14 @@ def read_dictionary(vocab_path):
     return word2id
 
 
-def random_embedding(vocab, embedding_dim):
+def random_embedding(batch_size, max_seq_length, num_dim):
     """
     :param vocab:
     :param embedding_dim:
     :return:
     """
-    embedding_mat = np.random.uniform(-0.25, 0.25, (len(vocab), embedding_dim))
+    #embedding_mat = np.random.uniform(-0.25, 0.25, (len(vocab), embedding_dim))
+    embedding_mat = tf.zeros([batch_size, max_seq_length, num_dim]
     embedding_mat = np.float32(embedding_mat)
     return embedding_mat
 
