@@ -237,6 +237,7 @@ class BiLSTM_CRF(object):
             step_num = epoch * num_batches + step + 1
 
             feed_dict, _ = self.get_feed_dict(seqs, labels, self.lr, self.dropout_keep_prob)
+            print(feed_dict[self.labels])
             _, loss_train, summary, step_num_, train_acc= sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy],
                                                          feed_dict=feed_dict)
             if step + 1 == 1 or (step + 1) % 300 == 0 or step + 1 == num_batches:
@@ -251,7 +252,7 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         
-        print("Training Accuracy = %.4f, time = %.3f seconds\n"%(train_acc, time.time()))
+        print("Training Accuracy = %.4f\n"%(train_acc))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
 
