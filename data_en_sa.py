@@ -110,11 +110,11 @@ def pad_sequences(sequences, max_len, pad_mark=0):
     :param pad_mark:
     :return:
     """
-    max_len_local = max(map(lambda x : len(x), sequences)) # 找出一堆seq里面最长的len
+    #max_len_local = max(map(lambda x : len(x), sequences)) # 找出一堆seq里面最长的len
     seq_list, seq_len_list = [], []
     for seq in sequences:
         seq = list(seq)
-        seq_ = seq[:max_len_local] + [pad_mark] * max(max_len - len(seq), 0)
+        seq_ = seq[:max_len] + [pad_mark] * max(max_len - len(seq), 0)
         seq_list.append(seq_)
         seq_len_list.append(min(len(seq), max_len))
     return seq_list, seq_len_list
