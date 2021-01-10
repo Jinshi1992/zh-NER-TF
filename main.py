@@ -87,7 +87,7 @@ if args.mode == 'train':
 
     ## train model on the whole training data
     print("train data: {}".format(len(train_data)))
-    model.train(train=train_data, dev=test_data)  # use test_data as the dev_data to see overfitting phenomena
+    model.train(train=train_data_small, dev=test_data)  # use test_data as the dev_data to see overfitting phenomena
 
 ## testing model
 elif args.mode == 'test':
