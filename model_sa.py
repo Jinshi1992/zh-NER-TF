@@ -87,7 +87,7 @@ class BiLSTM_CRF(object):
 
         with tf.variable_scope("proj"):
             W = tf.get_variable(name="W",
-                                shape=[2 * self.hidden_dim, self.num_tags],
+                                shape=[2 * self.hidden_dim * self.hidden_dim, self.num_tags],
                                 #shape=[self.num_tags, 2 * self.hidden_dim],
                                 initializer=tf.contrib.layers.xavier_initializer(),
                                 dtype=tf.float32)
@@ -102,7 +102,7 @@ class BiLSTM_CRF(object):
             s = tf.shape(output)
             
             output = tf.transpose(output, [1, 0, 2])
-            output = tf.reshape(output, [-1, 2*self.hidden_dim])
+            output = tf.reshape(output, [-1, 2*self.hidden_dim * self.hidden_dim])
             #output = tf.gather(output, int(output.get_shape()[0]) - 1)
             self.pred = tf.matmul(output, W) + b
             correctPred = tf.equal(tf.argmax(self.pred,1), tf.argmax(self.labels,1))
