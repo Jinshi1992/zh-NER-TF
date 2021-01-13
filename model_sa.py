@@ -129,8 +129,7 @@ class BiLSTM_CRF(object):
             self.loss = -tf.reduce_mean(log_likelihood)
 
         else:
-            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.pred,
-                                                                    labels=self.labels)
+            losses = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.pred)
 
             #mask = tf.sequence_mask(self.sequence_lengths)
             #losses = tf.boolean_mask(losses, mask)
