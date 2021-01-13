@@ -52,16 +52,16 @@ class BiLSTM_CRF(object):
 
     def lookup_layer_op(self):
         with tf.variable_scope("words"):
-            #_word_embeddings = tf.Variable(self.embeddings,
-            #                               dtype=tf.float32,
-            #                               trainable=self.update_embedding,
-            #                               name="_word_embeddings")
+            _word_embeddings = tf.Variable(self.embeddings,
+                                           dtype=tf.float32,
+                                           trainable=self.update_embedding,
+                                           name="_word_embeddings")
             #_word_embeddings = tf.Variable(tf.zeros([self.batch_size, self.max_seq_length, self.embedding_dim]),dtype=tf.float32)
             
-            #word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
-            #                                         ids=self.word_ids,
-            #                                         name="word_embeddings")
-            word_embeddings = tf.nn.embedding_lookup(self.embeddings,self.word_ids)
+            word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
+                                                     ids=self.word_ids,
+                                                     name="word_embeddings")
+            #word_embeddings = tf.nn.embedding_lookup(self.embeddings,self.word_ids)
         self.word_embeddings =  tf.nn.dropout(word_embeddings, self.dropout_pl)
 
     def biLSTM_layer_op(self):
@@ -136,7 +136,7 @@ class BiLSTM_CRF(object):
             self.loss = tf.reduce_mean(losses)
 
         tf.summary.scalar("loss", self.loss)
-        tf.summary.scalar("Accuracy", self.accuracy)
+        tf.summary.scalar("accuracy", self.accuracy)
 
     def softmax_pred_op(self):
         if not self.CRF:
@@ -251,11 +251,11 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         
-        print("Training Accuracy = %.4f\n"%(train_acc))
+        print("Training Accuracy = %.8f\n"%(train_acc))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
         dev_acc = self.dev_one_epoch(sess, dev)
-        print("Validation Accuracy = %.4f\n"%(dev_acc))
+        print("Validation Accuracy = %.8f\n"%(dev_acc))
        
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
         """
