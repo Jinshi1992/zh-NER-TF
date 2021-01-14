@@ -137,7 +137,7 @@ class BiLSTM_CRF(object):
             self.loss = tf.reduce_mean(losses)
 
         tf.summary.scalar("loss", self.loss)
-        tf.summary.scalar("accuracy", self.accuracy)
+        #tf.summary.scalar("accuracy", self.accuracy)
 
     def softmax_pred_op(self):
         if not self.CRF:
