@@ -41,6 +41,7 @@ class BiLSTM_CRF(object):
         self.loss_op()
         self.trainstep_op()
         self.init_op()
+        self.init_op_l()
 
     def add_placeholders(self):
         self.labels = tf.placeholder(tf.int64, shape=[self.batch_size, self.num_tags], name="labels")
@@ -167,6 +168,9 @@ class BiLSTM_CRF(object):
 
     def init_op(self):
         self.init_op = tf.global_variables_initializer()
+    
+    def init_op_l(self):
+        self.init_op_l = tf.local_vaciables_initializer()
 
     def add_summary(self, sess):
         """
@@ -186,6 +190,7 @@ class BiLSTM_CRF(object):
 
         with tf.Session(config=self.config) as sess:
             sess.run(self.init_op)
+            sess.run(self.init_op_l)
             self.add_summary(sess)
 
             for epoch in range(self.epoch_num):
