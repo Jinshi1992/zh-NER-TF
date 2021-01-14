@@ -102,12 +102,12 @@ class BiLSTM_CRF(object):
             s = tf.shape(output)
             
             output = tf.transpose(output, [1, 0, 2])
-            self.output = tf.reshape(output, [-1, 2*self.hidden_dim * self.hidden_dim])
+            output = tf.reshape(output, [-1, 2*self.hidden_dim * self.hidden_dim])
             #output = tf.gather(output, int(output.get_shape()[0]) - 1)
             self.pred = tf.matmul(output, W) + b
             correctPred = tf.equal(tf.argmax(self.pred,1), tf.argmax(self.labels,1))
-            self.accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
-            
+            #self.accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
+            self.accuracy = tf.metrics.accuracy(tf.argmax(self.labels, 1), tf.argmax(self.pred,1))
             
             output = tf.reduce_mean(output, reduction_indices=[1])
             #output = tf.reshape(output, [-1, 2*self.hidden_dim])
@@ -237,7 +237,7 @@ class BiLSTM_CRF(object):
 
             feed_dict, _ = self.get_feed_dict(seqs, labels, self.lr, self.dropout_keep_prob)
             
-            _, loss_train, summary, step_num_, train_acc, output = sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy, self.output],
+            _, loss_train, summary, step_num_, train_acc = sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy],
                                                          feed_dict=feed_dict)
             if step + 1 == 1 or (step + 1) % 300 == 0 or step + 1 == num_batches:
                 self.logger.info(
