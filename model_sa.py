@@ -168,7 +168,7 @@ class BiLSTM_CRF(object):
             #self.train_op = optim.apply_gradients(grads_and_vars_clip, global_step=self.global_step)
             tvars = tf.trainable_variables()
             grads, _ = tf.clip_by_global_norm(tf.gradients(self.cost, tvars), 5)
-            self.train_op = optimizer.apply_gradients(zip(grads, tvars))
+            self.train_op = optim.apply_gradients(zip(grads, tvars))
 
     def init_op(self):
         self.init_op = tf.global_variables_initializer()
