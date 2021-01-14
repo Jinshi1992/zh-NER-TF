@@ -131,6 +131,7 @@ class BiLSTM_CRF(object):
 
         else:
             losses = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.pred)
+            self.cost = cost = tf.reduce_sum(loss) / self.batch_size
 
             #mask = tf.sequence_mask(self.sequence_lengths)
             #losses = tf.boolean_mask(losses, mask)
@@ -162,9 +163,12 @@ class BiLSTM_CRF(object):
             else:
                 optim = tf.train.GradientDescentOptimizer(learning_rate=self.lr_pl)
 
-            grads_and_vars = optim.compute_gradients(self.loss)
-            grads_and_vars_clip = [[tf.clip_by_value(g, -self.clip_grad, self.clip_grad), v] for g, v in grads_and_vars]
-            self.train_op = optim.apply_gradients(grads_and_vars_clip, global_step=self.global_step)
+            #grads_and_vars = optim.compute_gradients(self.loss)
+            #grads_and_vars_clip = [[tf.clip_by_value(g, -self.clip_grad, self.clip_grad), v] for g, v in grads_and_vars]
+            #self.train_op = optim.apply_gradients(grads_and_vars_clip, global_step=self.global_step)
+            tvars = tf.trainable_variables()
+            grads, _ = tf.clip_by_global_norm(tf.gradients(cost, tvars), 5)
+            self.train_op = optimizer.apply_gradients(zip(grads, tvars))
 
     def init_op(self):
         self.init_op = tf.global_variables_initializer()
