@@ -131,7 +131,7 @@ class BiLSTM_CRF(object):
 
         else:
             losses = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.pred)
-            self.cost = cost = tf.reduce_sum(self.loss) / self.batch_size
+            self.cost = cost = tf.reduce_sum(losses) / self.batch_size
 
             #mask = tf.sequence_mask(self.sequence_lengths)
             #losses = tf.boolean_mask(losses, mask)
