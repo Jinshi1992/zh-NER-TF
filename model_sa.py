@@ -170,7 +170,7 @@ class BiLSTM_CRF(object):
         self.init_op = tf.global_variables_initializer()
     
     def init_op_l(self):
-        self.init_op_l = tf.local_vaciables_initializer()
+        self.init_op_l = tf.local_variables_initializer()
 
     def add_summary(self, sess):
         """
