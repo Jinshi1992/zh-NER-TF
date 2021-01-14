@@ -256,11 +256,11 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         
-        print("Training Accuracy = %.8f\n"%(train_acc))
+        print("Training Accuracy = %.8f\n".format(train_acc))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
         dev_acc = self.dev_one_epoch(sess, dev)
-        print("Validation Accuracy = %.8f\n"%(dev_acc))
+        print("Validation Accuracy = %.8f\n".format(dev_acc))
        
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
         """
