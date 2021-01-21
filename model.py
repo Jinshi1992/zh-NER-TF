@@ -222,9 +222,9 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
-        #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
-        f = tf_metrics.f1(label_list_dev, seq_len_list_dev, 5, [1, 2, 3, 4], average="macro")
-        print("f1:{0}\n".format(f))
+        self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
+        #f = tf_metrics.f1(label_list_dev, seq_len_list_dev, 5, [1, 2, 3, 4], average="macro")
+        #print("f1:{0}\n".format(f))
 
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
         """

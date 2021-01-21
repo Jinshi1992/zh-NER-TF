@@ -15,8 +15,9 @@ def get_entity(tag_seq, char_seq):
     PER = get_PER_entity(tag_seq, char_seq)
     LOC = get_LOC_entity(tag_seq, char_seq)
     ORG = get_ORG_entity(tag_seq, char_seq)
+    ORG = get_OTH_entity(tag_seq, char_seq)
     #MISC = get_MISC_entity(tag_seq, char_seq)
-    return PER, LOC, ORG#, MISC
+    return PER, LOC, ORG, OTH#, MISC
 
 
 def get_PER_entity(tag_seq, char_seq):
@@ -108,6 +109,28 @@ def get_MISC_entity(tag_seq, char_seq):
                 del misc
             continue
     return MISC
+
+def get_OTH_entity(tag_seq, char_seq):
+    length = len(char_seq)
+    OTH = []
+    for i, (char, tag) in enumerate(zip(char_seq, tag_seq)):
+        if tag == 'B-OTH':
+            if 'oth' in locals().keys():
+                OTH.append(oth)
+                del oth
+            oth = char
+            if i+1 == length:
+                OTH.append(oth)
+        if tag == 'I-OTH':
+            oth += char
+            if i+1 == length:
+                OTH.append(oth)
+        if tag not in ['I-OTH', 'B-OTH']:
+            if 'oth' in locals().keys():
+                OTH.append(oth)
+                del oth
+            continue
+    return OTH
 
 def get_logger(filename):
     logger = logging.getLogger('logger')
