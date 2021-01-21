@@ -10,10 +10,10 @@ import numpy as np
 #             }
 
 tag2label = {"O": 0,
-             "I-MISC": 1,
-             "I-LOC": 2,
-             "I-ORG": 3,
-             "I-PER": 4
+             "B-MISC": 0, "I-MISC": 1,
+             "B-LOC": 0, "I-LOC": 2,
+             "B-ORG": 0, "I-ORG": 3,
+             "B-PER": 0, "I-PER": 4
              }
 
 
