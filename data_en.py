@@ -3,10 +3,10 @@ import numpy as np
 
 ## tags, BIO
 tag2label = {"O": 0,
-             "B-MISC": 1, "I-MISC": 2,
-             "B-LOC": 3, "I-LOC": 4,
-             "B-ORG": 5, "I-ORG": 6,
-             "B-PER": 7, "I-PER": 8
+             #"B-MISC": 1, "I-MISC": 2,
+             "B-LOC": 1, "I-LOC": 2,
+             "B-ORG": 3, "I-ORG": 4,
+             "B-PER": 4, "I-PER": 6
              }
 
 #tag2label = {"O": 0, 
