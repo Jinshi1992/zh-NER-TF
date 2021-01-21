@@ -1,9 +1,9 @@
 import tensorflow as tf
 import numpy as np
 import os, argparse, time, random
-from model_sa import BiLSTM_CRF
+from model import BiLSTM_CRF
 from utils import str2bool, get_logger, get_entity
-from data_en_sa import read_corpus, read_dictionary, tag2label, random_embedding
+from data_en import read_corpus, read_dictionary, tag2label, random_embedding
 
 
 ## Session configuration
