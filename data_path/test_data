@@ -4571,7 +4571,7 @@ der d ART I-NC O
 Vorsitzende Vorsitzende NN I-NC O
 der d ART B-NC O
 Kelkheimer Kelkheimer NN I-NC I-MISC
-CDU-Fraktion CDU-Fraktion NN I-NC B-MISC
+CDU-Fraktion CDU-Fraktion NN I-NC O
 Wolfgang Wolfgang NE B-NC I-PER
 Männer Mann NN I-NC I-PER
 gerichtet richten VVPP I-VC O
@@ -13540,7 +13540,7 @@ Pläne Plan NN I-NC O
 für für APPR I-PC O
 den d ART I-NC O
 Mainbogen Mainbogen NN I-NC I-LOC
-Statt statt APPR I-PC B-LOC
+Statt statt APPR I-PC O
 Feldern Feld NN I-NC I-LOC
 soll sollen VMFIN I-VC O
 es es PPER I-NC O
@@ -26901,7 +26901,7 @@ Neue neu ADJA I-NC O
 Prügel Prügel NN I-NC O
 für für APPR I-PC O
 Lambsdorff Lambsdorff NE I-NC I-PER
-Blüm Blüm NE I-NC B-PER
+Blüm Blüm NE I-NC O
 warnt warnen VVFIN I-VC O
 vor vor APPR I-PC O
 sozialer sozial ADJA I-NC O
@@ -27022,7 +27022,7 @@ Blüm Blüm NE I-NC I-PER
 der d ART I-NC O
 auch auch ADV I-NC O
 nordrhein-westfälischer nordrhein-westfälisch ADJA I-NC I-MISC
-CDU-Vorsitzender CDU-Vorsitzende NN I-NC B-MISC
+CDU-Vorsitzender CDU-Vorsitzende NN I-NC O
 ist sein VAFIN I-VC O
 , , $, O O
 wandte wenden VVFIN I-VC O
@@ -27227,7 +27227,7 @@ habe haben VAFIN I-VC O
 
 Die d ART I-NC O
 Berliner Berliner ADJA I-NC I-MISC
-FDP-Vorsitzende FDP-Vorsitzende NN I-NC B-MISC
+FDP-Vorsitzende FDP-Vorsitzende NN I-NC O
 Carola Carola NE B-NC I-PER
 von von APPR I-PC I-PER
 Braun Braun NE I-NC I-PER
@@ -27709,7 +27709,7 @@ Der d ART I-NC O
 Führer Führer NN I-NC O
 der d ART B-NC O
 bosnischen bosnisch ADJA I-NC I-MISC
-Serben Serbe NN I-NC B-MISC
+Serben Serbe NN I-NC O
 , , $, O O
 Radovan Radovan NE I-NC I-PER
 Karadzic Karadzic NE I-NC I-PER
@@ -38411,7 +38411,7 @@ der d ART I-NC O
 Weltmeisterschaft Weltmeisterschaft NN I-NC O
 im im APPRART I-PC O
 westfälischen westfälisch ADJA I-NC I-LOC
-Riesenbeck Riesenbeck NE I-NC B-LOC
+Riesenbeck Riesenbeck NE I-NC O
 die d ART B-NC O
 Goldmedaille Goldmedaille NN I-NC O
 . . $. O O
@@ -38874,7 +38874,7 @@ Später spät ADJD O O
 schlossen schließen VVFIN I-VC O
 der d ART I-NC O
 Berliner Berliner ADJA I-NC I-MISC
-TSC-Fahrer <unknown> NN I-NC B-MISC
+TSC-Fahrer <unknown> NN I-NC O
 Jens Jens NE B-NC I-PER
 Voigt Voigt NE I-NC I-PER
 und und KON O O
@@ -43548,7 +43548,7 @@ Bartels Bartel|Bartels NE I-NC I-PER
 machte machen VVFIN I-VC O
 sein sein PPOSAT I-NC O
 italienischer italienisch ADJA I-NC I-MISC
-Crypton-Teamkollege <unknown> NN I-NC B-MISC
+Crypton-Teamkollege <unknown> NN I-NC O
 Luca <unknown> NE B-NC I-PER
 Badoer <unknown> NE I-NC I-PER
 in in APPR I-PC O
@@ -45234,7 +45234,7 @@ DFB DFB NE I-NC I-ORG
 wird werden VAFIN I-VC O
 im im APPRART I-PC O
 Leverkusener Leverkusener NN I-NC I-MISC
-Ulrich-Haberland-Stadion Ulrich-Haberland-Stadion NN I-NC B-LOC
+Ulrich-Haberland-Stadion Ulrich-Haberland-Stadion NN I-NC O
 zwischen zwischen APPR I-PC O
 Bayer Bayer NE I-NC I-ORG
 Leverkusen Leverkusen NE I-NC I-ORG
@@ -48074,7 +48074,7 @@ rund rund ADV O O
 von von APPR I-PC O
 400 400 CARD I-NC O
 Karbener <unknown> NN I-NC I-MISC
-SPD-Mitgliedern SPD-Mitglied NN B-NC B-MISC
+SPD-Mitgliedern SPD-Mitglied NN B-NC O
 am am APPRART I-PC O
 Samstag Samstag NN I-NC O
 den d ART B-NC O
@@ -48461,7 +48461,7 @@ soll sollen VMFIN I-VC O
 Rathauschef Rathauschef NN I-NC O
 bleiben bleiben VVINF I-VC O
 Büdinger Büdinger ADJA I-NC I-MISC
-CDU-Stadtverband CDU-Stadtverband NN I-NC B-MISC
+CDU-Stadtverband CDU-Stadtverband NN I-NC O
 nominierte nominieren VVFIN I-VC O
 ihn er PPER I-NC O
 für für APPR I-PC O
@@ -48503,7 +48503,7 @@ der d ART B-NC O
 rund rund ADV I-NC O
 300 300 CARD I-NC O
 Büdinger Büdinger ADJA I-NC I-MISC
-CDU-Mitglieder CDU-Mitglied NN I-NC B-MISC
+CDU-Mitglieder CDU-Mitglied NN I-NC O
 hatten haben VAFIN I-VC O
 sich er|es|sie|Sie PRF I-NC O
 an an APPR I-PC O
@@ -49065,7 +49065,7 @@ seine sein PPOSAT I-NC O
 Zustimmung Zustimmung NN I-NC O
 die d ART B-NC O
 Magdeburger Magdeburger NN I-NC I-MISC
-BfV-Außenstelle <unknown> NN I-NC B-MISC
+BfV-Außenstelle <unknown> NN I-NC O
 einen ein ART B-NC O
 niedersächsischen niedersächsisch ADJA I-NC I-MISC
 Beamten Beamten|Beamter NN I-NC O
@@ -50247,7 +50247,7 @@ er er PPER I-NC O
 
 Der d ART I-NC O
 Magdeburger Magdeburger NN I-NC I-MISC
-BfV-Außenstellenleiter <unknown> NN I-NC B-MISC
+BfV-Außenstellenleiter <unknown> NN I-NC O
 habe haben VAFIN I-VC O
 sich er|es|sie|Sie PRF I-NC O
 nämlich nämlich ADV O O
@@ -52432,7 +52432,7 @@ gibt geben VVFIN I-VC O
 Das d ART I-NC O
 Bad Bad NE I-NC I-MISC
 Homburger Homburger ADJA I-NC I-MISC
-Laternenfest Laternenfest NN I-NC B-MISC
+Laternenfest Laternenfest NN I-NC O
 wird werden VAFIN I-VC O
 seit seit APPR I-PC O
 1934 1934 CARD I-NC O
@@ -53055,7 +53055,7 @@ haben haben VAFIN I-VC O
 die d ART I-NC O
 800 800 CARD I-NC O
 Wetterauer Wetterauer NE I-NC I-MISC
-Ahmadiyya-Muslims <unknown> NN I-NC B-MISC
+Ahmadiyya-Muslims <unknown> NN I-NC O
 die d ART B-NC O
 Großveranstaltung Großveranstaltung NN I-NC O
 organisiert organisieren VVPP I-VC O
@@ -53312,7 +53312,7 @@ ist sein VAFIN I-VC O
 Vorsitzender Vorsitzende NN I-NC O
 aller alle PIDAT B-NC O
 deutschen deutsch ADJA I-NC I-MISC
-Ahmadiyya-Gemeinden <unknown> NN I-NC B-MISC
+Ahmadiyya-Gemeinden <unknown> NN I-NC O
 ) ) $( O O
 und und KON O O
 hundert hundert CARD I-NC O
@@ -53812,7 +53812,7 @@ anerkennen anerkennen VVFIN I-VC O
 
 Ein ein ART I-NC O
 christlicher christlich ADJA I-NC I-MISC
-Türke Türke NN I-NC B-MISC
+Türke Türke NN I-NC O
 erinnert erinnern VVFIN I-VC O
 ans ans APPRART I-PC O
 Koran-Gebot <unknown> NN I-NC I-MISC
