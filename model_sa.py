@@ -41,6 +41,7 @@ class BiLSTM_CRF(object):
         self.loss_op()
         self.trainstep_op()
         self.init_op()
+        self.init_op_l()
 
     def add_placeholders(self):
         self.labels = tf.placeholder(tf.int64, shape=[self.batch_size, self.num_tags], name="labels")
@@ -52,16 +53,16 @@ class BiLSTM_CRF(object):
 
     def lookup_layer_op(self):
         with tf.variable_scope("words"):
-            #_word_embeddings = tf.Variable(self.embeddings,
-            #                               dtype=tf.float32,
-            #                               trainable=self.update_embedding,
-            #                               name="_word_embeddings")
+            _word_embeddings = tf.Variable(self.embeddings,
+                                           dtype=tf.float32,
+                                           trainable=self.update_embedding,
+                                           name="_word_embeddings")
             #_word_embeddings = tf.Variable(tf.zeros([self.batch_size, self.max_seq_length, self.embedding_dim]),dtype=tf.float32)
             
-            #word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
-            #                                         ids=self.word_ids,
-            #                                         name="word_embeddings")
-            word_embeddings = tf.nn.embedding_lookup(self.embeddings,self.word_ids)
+            word_embeddings = tf.nn.embedding_lookup(params=_word_embeddings,
+                                                     ids=self.word_ids,
+                                                     name="word_embeddings")
+            #word_embeddings = tf.nn.embedding_lookup(self.embeddings,self.word_ids)
         self.word_embeddings =  tf.nn.dropout(word_embeddings, self.dropout_pl)
 
     def biLSTM_layer_op(self):
@@ -87,7 +88,7 @@ class BiLSTM_CRF(object):
 
         with tf.variable_scope("proj"):
             W = tf.get_variable(name="W",
-                                shape=[2 * self.hidden_dim, self.num_tags],
+                                shape=[2 * self.hidden_dim * self.hidden_dim, self.num_tags],
                                 #shape=[self.num_tags, 2 * self.hidden_dim],
                                 initializer=tf.contrib.layers.xavier_initializer(),
                                 dtype=tf.float32)
@@ -102,12 +103,12 @@ class BiLSTM_CRF(object):
             s = tf.shape(output)
             
             output = tf.transpose(output, [1, 0, 2])
-            #output = tf.reshape(output, [-1, 2*self.hidden_dim])
-            output = tf.gather(output, int(output.get_shape()[0]) - 1)
+            output = tf.reshape(output, [-1, 2*self.hidden_dim * self.hidden_dim])
+            #output = tf.gather(output, int(output.get_shape()[0]) - 1)
             self.pred = tf.matmul(output, W) + b
             correctPred = tf.equal(tf.argmax(self.pred,1), tf.argmax(self.labels,1))
-            self.accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
-            
+            #self.accuracy = tf.reduce_mean(tf.cast(correctPred, tf.float32))
+            self.accuracy = tf.metrics.accuracy(tf.argmax(self.labels, 1), tf.argmax(self.pred,1))
             
             output = tf.reduce_mean(output, reduction_indices=[1])
             #output = tf.reshape(output, [-1, 2*self.hidden_dim])
@@ -129,15 +130,16 @@ class BiLSTM_CRF(object):
             self.loss = -tf.reduce_mean(log_likelihood)
 
         else:
-            losses = tf.nn.softmax_cross_entropy_with_logits(logits=self.pred,
-                                                                    labels=self.labels)
+            losses = tf.nn.softmax_cross_entropy_with_logits(labels=self.labels, logits=self.pred)
+            
 
             #mask = tf.sequence_mask(self.sequence_lengths)
             #losses = tf.boolean_mask(losses, mask)
             self.loss = tf.reduce_mean(losses)
+            self.cost = cost = tf.reduce_sum(self.loss) / self.batch_size
 
         tf.summary.scalar("loss", self.loss)
-        tf.summary.scalar("Accuracy", self.accuracy)
+        #tf.summary.scalar("accuracy", self.accuracy)
 
     def softmax_pred_op(self):
         if not self.CRF:
@@ -162,12 +164,18 @@ class BiLSTM_CRF(object):
             else:
                 optim = tf.train.GradientDescentOptimizer(learning_rate=self.lr_pl)
 
-            grads_and_vars = optim.compute_gradients(self.loss)
-            grads_and_vars_clip = [[tf.clip_by_value(g, -self.clip_grad, self.clip_grad), v] for g, v in grads_and_vars]
-            self.train_op = optim.apply_gradients(grads_and_vars_clip, global_step=self.global_step)
+            #grads_and_vars = optim.compute_gradients(self.loss)
+            #grads_and_vars_clip = [[tf.clip_by_value(g, -self.clip_grad, self.clip_grad), v] for g, v in grads_and_vars]
+            #self.train_op = optim.apply_gradients(grads_and_vars_clip, global_step=self.global_step)
+            tvars = tf.trainable_variables()
+            grads, _ = tf.clip_by_global_norm(tf.gradients(self.cost, tvars), 5)
+            self.train_op = optim.apply_gradients(zip(grads, tvars))
 
     def init_op(self):
         self.init_op = tf.global_variables_initializer()
+    
+    def init_op_l(self):
+        self.init_op_l = tf.local_variables_initializer()
 
     def add_summary(self, sess):
         """
@@ -187,6 +195,7 @@ class BiLSTM_CRF(object):
 
         with tf.Session(config=self.config) as sess:
             sess.run(self.init_op)
+            sess.run(self.init_op_l)
             self.add_summary(sess)
 
             for epoch in range(self.epoch_num):
@@ -238,7 +247,7 @@ class BiLSTM_CRF(object):
 
             feed_dict, _ = self.get_feed_dict(seqs, labels, self.lr, self.dropout_keep_prob)
             
-            _, loss_train, summary, step_num_, train_acc= sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy],
+            _, loss_train, summary, step_num_, train_acc = sess.run([self.train_op, self.loss, self.merged, self.global_step, self.accuracy],
                                                          feed_dict=feed_dict)
             if step + 1 == 1 or (step + 1) % 300 == 0 or step + 1 == num_batches:
                 self.logger.info(
@@ -252,11 +261,11 @@ class BiLSTM_CRF(object):
 
         self.logger.info('===========validation / test===========')
         
-        print("Training Accuracy = %.4f\n"%(train_acc))
+        print("Training Accuracy = {0}\n".format(train_acc))
         #label_list_dev, seq_len_list_dev = self.dev_one_epoch(sess, dev)
         #self.evaluate(label_list_dev, seq_len_list_dev, dev, epoch)
         dev_acc = self.dev_one_epoch(sess, dev)
-        print("Validation Accuracy = %.4f\n"%(dev_acc))
+        print("Validation Accuracy = {0}\n".format(dev_acc))
        
     def get_feed_dict(self, seqs, labels=None, lr=None, dropout=None):
         """
