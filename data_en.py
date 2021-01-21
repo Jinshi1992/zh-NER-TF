@@ -9,7 +9,7 @@ import numpy as np
 #             "B-PER": 7, "I-PER": 8
 #             }
 
-tag2label = {"O": 0,
+tag2label = {"O": 0, "B-MISC": 0,"B-LOC": 0, "B-ORG": 0, "B-PER": 0,
              "I-MISC": 1,
              "I-LOC": 2,
              "I-ORG": 3,
