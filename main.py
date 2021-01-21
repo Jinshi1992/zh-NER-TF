@@ -1,9 +1,9 @@
 import tensorflow as tf
 import numpy as np
 import os, argparse, time, random
-from model_sa import BiLSTM_CRF
+from model import BiLSTM_CRF
 from utils import str2bool, get_logger, get_entity
-from data_en_sa import read_corpus, read_dictionary, tag2label, random_embedding
+from data_en import read_corpus, read_dictionary, tag2label, random_embedding
 
 
 ## Session configuration
@@ -22,7 +22,7 @@ parser.add_argument('--batch_size', type=int, default=64, help='#sample of each 
 parser.add_argument('--epoch', type=int, default=40, help='#epoch of training')
 parser.add_argument('--hidden_dim', type=int, default=300, help='#dim of hidden state')
 parser.add_argument('--optimizer', type=str, default='Adam', help='Adam/Adadelta/Adagrad/RMSProp/Momentum/SGD')
-parser.add_argument('--CRF', type=str2bool, default=False, help='use CRF at the top layer. if False, use Softmax')
+parser.add_argument('--CRF', type=str2bool, default=True, help='use CRF at the top layer. if False, use Softmax')
 parser.add_argument('--max_seq_length', type=int, default=128, help='max length of sequence')
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--clip', type=float, default=5.0, help='gradient clipping')
@@ -37,7 +37,7 @@ args = parser.parse_args()
 
 
 ## get char embeddings
-word2id = read_dictionary(os.path.join('.', args.train_data, 'word2id_sa_en.pkl'))
+word2id = read_dictionary(os.path.join('.', args.train_data, 'word2id_de.pkl'))
 if args.pretrain_embedding == 'random':
     embeddings = random_embedding(word2id, args.embedding_dim)
     #embeddings = random_embedding(args.batch_size, args.max_seq_length, args.hidden_dim)
