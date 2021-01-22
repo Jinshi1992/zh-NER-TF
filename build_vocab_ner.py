@@ -30,7 +30,7 @@ def main():
     test_path = "data_path/test_data"
     dev_path = "data_path/dev_data"
     
-    min_count = 3
+    min_count = 0
     
     data_train = read_corpus(train_path)
     data_dev = read_corpus(dev_path)
